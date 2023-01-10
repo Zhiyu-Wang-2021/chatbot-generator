@@ -19,5 +19,6 @@ from dbapp import views
 urlpatterns = [
     path('generate_json/', views.generate_json),
     path('get_json/', views.get_json),
-    path('del_json/', views.del_json)
+    path('del_json/', views.del_json),
+    path('url_list/', views.list_url)
 ]
