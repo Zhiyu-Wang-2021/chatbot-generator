@@ -14,19 +14,46 @@ website_collection = dialog_db["websites_to_dialogs"]
 
 
 @csrf_exempt
-def generate_json(request):  # POST - provide answers and get the ref id of dialog json in the db
+def generate_json(request):  # POST - provide url and generate
     data = json.loads(request.body)
-    print(data)
+    print(data)  # only url and ref
+    # use the webscraptool to get data from url
+    data["answers"] = {
+        'phone': [{
+                'title': '', 'num': 'Tel: 01302 868421'
+            }],
+        'openingtimepage': [{
+                'title': 'Opening Times',
+                'time': 'Opening Times\nPlease note on two Wednesdays per month we close at 12:00 for training.\nMonday\n07.00 - 18:00\nTuesday\n08:00 - 20.30\nWednesday\n08:00 - 18:00\nThursday\n07:00 - 18:00\nFriday\n08:00 - 18:00\n'
+            }],
+        'contactpage': [{
+                'postcode': 'Doncaster, DN11 0LP',
+                'address': 'Rossington\nGrange Lane\nThe Rossington Practice\n',
+                'contact': 'Doncaster, DN11 0LPTel: 01302 868421\n'
+            }]
+        }
     ans = Answers(data)
 
     dj = DialogJson(ans)
     dialog_json = dj.get_json()
 
-    dialog_id = dialog_collection.insert_one(dialog_json).inserted_id
-    website_id = website_collection.insert_one({
+    dialog_filter = {"_id": ObjectId(data["ref"])}
+    new_values = {"$set": dialog_json}
+    dialog_collection.update_one(dialog_filter, new_values)
+
+    return HttpResponse("success")
+
+
+@csrf_exempt
+def register_url(request):  # POST - register an url into the database
+    data = json.loads(request.body)
+    print(data)
+
+    dialog_id = dialog_collection.insert_one({}).inserted_id
+    website_collection.insert_one({
         "dialog_ref": dialog_id,
         "url": data["url"]
-    }).inserted_id
+    })
 
     return HttpResponse(dialog_id)
 

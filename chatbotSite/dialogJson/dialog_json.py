@@ -102,6 +102,8 @@ class DialogJson:
     #     "previous_sibling": "Welcome"
     # }, ...],
     def _dialog_nodes(self):
+        loc_info = self.answers.location[0]["address"] + self.answers.location[0]["postcode"]
+        hour_info = self.answers.operation_hour[0]["time"]
         result_raw = [
             self._welcome_node(),
             self._dialog_node_multi_condition(
@@ -110,8 +112,8 @@ class DialogJson:
                     "handler": "@uk_location",
                     "enter": "#location_info",
                     "output": [
-                        ("true", "Our trust is at: \n" + self.answers.location),
-                        ("$location", "Our $location trust is at: \n" + self.answers.location)
+                        ("true", "Our trust is at: \n" + loc_info),
+                        ("$location", "Our $location trust is at: \n" + loc_info)
                     ]
                 },
                 slot_var="$location",
@@ -119,7 +121,7 @@ class DialogJson:
             ),
             self._dialog_node_standard(
                 reference="Hours Info",
-                output="Our trust opens at " + self.answers.operation_hour,
+                output="Our trust opens at " + hour_info,
                 condition="#hours_info",
                 previous_sibling="Location Info"
             ),

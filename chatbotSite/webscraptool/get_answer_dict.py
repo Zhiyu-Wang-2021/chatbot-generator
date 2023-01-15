@@ -7,7 +7,6 @@ import get_phone_num
 import json_formatter
 import url_extractor
 
-
 # www.gosh.nhs.uk
 # www.whitelodgemedicalpractice.nhs.uk
 
@@ -18,13 +17,16 @@ import url_extractor
 # www.clackmannanandkincardine.scot.nhs.uk
 # www.theweardalepractice.nhs.uk
 
+
 def get_answer(url):
     website_url = url
     dir = './url_crawler/outputfile.json'
     # about us/contact us/opening hour/opening times
 
+
     url_extractor.crawl(website_url)
     url_extractor.extract_url(dir)
+
 
     # remove previous result
     if os.path.exists('phone.json'):
@@ -45,31 +47,37 @@ def get_answer(url):
     f2 = open('contactpage.json', 'r', encoding='utf-8')
     f3 = open('openingtimepage.json', 'r', encoding='utf-8')
 
+
     # output things extract from different webpage to corresponding txt file
 
     # get data from opening hour page
-    filter_keywords = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times',
-                       'opening hour']
+    filter_keywords = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour']
     not_empty = url_extractor.filter_url(dir, filter_keywords)
     if not_empty:
-        url_extractor.get_text_from_filtered_url('./url_filtered_list.txt', './content.txt')
+        url_extractor.get_text_from_filtered_url('./url_filtered_list.txt','./content.txt')
         get_openingtime.run('openingtimepage.json')
 
+
+
     # get data from contact page
-    filter_keywords = ['Contact us', 'Contact Us', 'contact us', 'Contact-us', 'Contact-Us', 'contact-us', 'Contact']
+    filter_keywords = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact']
     not_empty = url_extractor.filter_url(dir, filter_keywords)
 
     if not_empty:
-        url_extractor.get_text_from_filtered_url('./url_filtered_list.txt', './content.txt')
+        url_extractor.get_text_from_filtered_url('./url_filtered_list.txt','./content.txt')
         get_addr.run('contactpage.json')
         get_openingtime.run('openingtimepage.json')
         # don't need to filter we can delete it later if phone number is already in address file
         get_phone_num.run('phone.json')
 
-    url_extractor.get_text('http://' + website_url + '/')
+
+
+
+    url_extractor.get_text('http://'+ website_url + '/')
     get_openingtime.run('openingtimepage.json')
     get_phone_num.run('phone.json')
     get_addr.run('contactpage.json')
+
 
     # concat lists in json file together
     json_formatter.concat_json('openingtimepage.json')
@@ -84,12 +92,16 @@ def get_answer(url):
     load3 = json.load(file3)
 
     res = {
-        'phone': load1,
-        'openingtimepage': load2,
-        'contactpage': load3
+        'phone':load1,
+        'openingtimepage':load2,
+        'contactpage':load3
     }
+
+    print(res)
 
     with open('result.json', 'w') as f:
         json.dump(res, f)
 
     return res
+
+# get_answer('www.therossingtonpractice.nhs.uk')
