@@ -9,3 +9,15 @@ class Answers:
         self.operation_hour = data["answers"]["openingtimepage"]
         self.location = data["answers"]["contactpage"]
         self.phone = data["answers"]["phone"]
+
+    def get_loc_info(self):
+        if len(self.location) > 0:
+            return self.location[0]["address"] + self.location[0]["postcode"]
+        else:
+            return "Not Found"
+
+    def get_hours_info(self):
+        if len(self.operation_hour) > 0:
+            return self.operation_hour[0]
+        else:
+            return "Not Found"

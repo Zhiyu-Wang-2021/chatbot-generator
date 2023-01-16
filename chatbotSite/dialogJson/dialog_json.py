@@ -108,8 +108,6 @@ class DialogJson:
         #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
         #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
         # }
-        loc_info = self.answers.location[0]["address"] + self.answers.location[0]["postcode"]
-        hour_info = self.answers.operation_hour[0]
         result_raw = [
             self._welcome_node(),
             self._dialog_node_multi_condition(
@@ -118,8 +116,8 @@ class DialogJson:
                     "handler": "@uk_location",
                     "enter": "#location_info",
                     "output": [
-                        ("true", "Our trust is at: \n" + loc_info),
-                        ("$location", "Our $location trust is at: \n" + loc_info)
+                        ("true", "Our trust is at: \n" + self.answers.get_loc_info()),
+                        ("$location", "Our $location trust is at: \n" + self.answers.get_loc_info())
                     ]
                 },
                 slot_var="$location",
@@ -127,7 +125,7 @@ class DialogJson:
             ),
             self._dialog_node_standard(
                 reference="Hours Info",
-                output="Our trust opens at " + hour_info,
+                output="Our trust opens at " + self.answers.get_hours_info(),
                 condition="#hours_info",
                 previous_sibling="Location Info"
             ),

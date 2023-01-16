@@ -14,10 +14,10 @@ sys.path.insert(1, workingdir)
 
 
 # www.gosh.nhs.uk
-# www.whitelodgemedicalpractice.nhs.uk
+# www.whitelodgemedicalpractice.nhs.uk - ok
 
 # www.therossingtonpractice.nhs.uk
-# www.oakleymedicalpractice.nhs.uk
+# www.oakleymedicalpractice.nhs.uk - ok
 
 # several clinic
 # www.clackmannanandkincardine.scot.nhs.uk

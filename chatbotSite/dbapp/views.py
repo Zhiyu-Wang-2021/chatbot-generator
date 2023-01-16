@@ -9,6 +9,8 @@ from pymongo import MongoClient
 from env import password
 from webscraptool.get_answer_dict import get_dummy_answer, get_answer
 
+USE_DUMMY_DATA = False
+
 client = MongoClient("mongodb+srv://csp_chatbot_db:" + password + "@csp-chatbot.jwqkx3s.mongodb.net/?retryWrites=true&w=majority")
 dialog_db = client["dialog_json"]
 dialog_collection = dialog_db['dialog_json']
@@ -26,8 +28,10 @@ def generate_json(request):  # POST - provide url and generate
     #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
     #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
     # }
-    # data["answers"] = get_dummy_answer(data["url"])
-    data["answers"] = get_answer(data["url"])
+    if USE_DUMMY_DATA:
+        data["answers"] = get_dummy_answer(data["url"])
+    else:
+        data["answers"] = get_answer(data["url"])
     ans = Answers(data)
 
     dj = DialogJson(ans)
