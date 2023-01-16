@@ -1,11 +1,16 @@
-import json
 import os
-
+import sys
+workingdir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, workingdir)
+import url_extractor
 import get_addr
 import get_openingtime
 import get_phone_num
+import os
+import match_content
 import json_formatter
-import url_extractor
+import json
+import filter_content
 
 # www.gosh.nhs.uk
 # www.whitelodgemedicalpractice.nhs.uk
@@ -17,9 +22,10 @@ import url_extractor
 # www.clackmannanandkincardine.scot.nhs.uk
 # www.theweardalepractice.nhs.uk
 
-
-website_url = 'www.therossingtonpractice.nhs.uk'
-dir = './url_crawler/outputfile.json'
+# workingdir is needed as we may run the code from other folder
+workingdir = os.path.dirname(os.path.abspath(__file__))
+website_url = 'www.whitelodgemedicalpractice.nhs.uk'
+dir = workingdir + '\\url_crawler\\outputfile.json'
 # about us/contact us/opening hour/opening times
 
 
@@ -28,23 +34,23 @@ url_extractor.extract_url(dir)
 
 
 # remove previous result
-if os.path.exists('phone.json'):
-    os.remove('phone.json')
+if os.path.exists(workingdir + '\\' + 'phone.json'):
+    os.remove(workingdir + '\\' + 'phone.json')
 
-if os.path.exists('contactpage.json'):
-    os.remove('contactpage.json')
+if os.path.exists(workingdir + '\\' + 'contactpage.json'):
+    os.remove(workingdir + '\\' + 'contactpage.json')
 
-if os.path.exists('openingtimepage.json'):
-    os.remove('openingtimepage.json')
+if os.path.exists(workingdir + '\\' + 'openingtimepage.json'):
+    os.remove(workingdir + '\\' + 'openingtimepage.json')
 
 # create outputfile
-# f1 = open('phone.json', 'x', encoding='utf-8')
-# f2 = open('contactpage.json', 'x', encoding='utf-8')
-# f3 = open('openingtimepage.json', 'x', encoding='utf-8')
+f1 = open(workingdir + '\\' + 'phone.json', 'x', encoding='utf-8')
+f2 = open(workingdir + '\\' + 'contactpage.json', 'x', encoding='utf-8')
+f3 = open(workingdir + '\\' + 'openingtimepage.json', 'x', encoding='utf-8')
 
-f1 = open('phone.json', 'r', encoding='utf-8')
-f2 = open('contactpage.json', 'r', encoding='utf-8')
-f3 = open('openingtimepage.json', 'r', encoding='utf-8')
+f1 = open(workingdir + '\\' + 'phone.json', 'r', encoding='utf-8')
+f2 = open(workingdir + '\\' + 'contactpage.json', 'r', encoding='utf-8')
+f3 = open(workingdir + '\\' + 'openingtimepage.json', 'r', encoding='utf-8')
 
 
 # output things extract from different webpage to corresponding txt file
@@ -53,8 +59,8 @@ f3 = open('openingtimepage.json', 'r', encoding='utf-8')
 filter_keywords = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour']
 not_empty = url_extractor.filter_url(dir, filter_keywords)
 if not_empty:
-    url_extractor.get_text_from_filtered_url('./url_filtered_list.txt','./content.txt')
-    get_openingtime.run('openingtimepage.json')
+    url_extractor.get_text_from_filtered_url(workingdir + '/url_filtered_list.txt',workingdir + '/content.txt')
+    get_openingtime.run(workingdir + '\\' + 'openingtimepage.json')
 
 
 
@@ -63,38 +69,42 @@ filter_keywords = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Conta
 not_empty = url_extractor.filter_url(dir, filter_keywords)
 
 if not_empty:
-    url_extractor.get_text_from_filtered_url('./url_filtered_list.txt','./content.txt')
-    get_addr.run('contactpage.json')
-    get_openingtime.run('openingtimepage.json')
+    url_extractor.get_text_from_filtered_url(workingdir + '/url_filtered_list.txt', workingdir + '/content.txt')
+    get_addr.run(workingdir + '\\' + 'contactpage.json')
+    get_openingtime.run(workingdir + '\\' +  'openingtimepage.json')
     # don't need to filter we can delete it later if phone number is already in address file
-    get_phone_num.run('phone.json')
+    get_phone_num.run(workingdir + '\\' + 'phone.json')
+    
+
 
 
 url_extractor.get_text('http://'+ website_url + '/')
-get_openingtime.run('openingtimepage.json')
-get_phone_num.run('phone.json')
-get_addr.run('contactpage.json')
+get_openingtime.run(workingdir + '\\' + 'openingtimepage.json')
+get_phone_num.run(workingdir + '\\' + 'phone.json') 
+get_addr.run(workingdir + '\\' + 'contactpage.json')
 
 
 # concat lists in json file together
-json_formatter.concat_json('openingtimepage.json')
-json_formatter.concat_json('phone.json')
-json_formatter.concat_json('contactpage.json')
+json_formatter.concat_json(workingdir + '\\' + 'openingtimepage.json')
+json_formatter.concat_json(workingdir + '\\' + 'phone.json')
+json_formatter.concat_json(workingdir + '\\' + 'contactpage.json')
 
-file1 = open('phone.json')
-file2 = open('openingtimepage.json')
-file3 = open('contactpage.json')
+file1 = open(workingdir + '\\' + 'phone.json')
+file2 = open(workingdir + '\\' + 'openingtimepage.json')
+file3 = open(workingdir + '\\' + 'contactpage.json')
 load1 = json.load(file1)
 load2 = json.load(file2)
 load3 = json.load(file3)
 
 res = {
-    'phone':load1,
-    'openingtimepage':load2,
-    'contactpage':load3
+        'phone':load1,
+        'openingtimepage':load2,
+        'contactpage':load3
 }
 
-print(res)
 
-with open('result.json', 'w') as f:
+with open(workingdir + '\\' + 'result.json', 'w') as f:
     json.dump(res, f)
+
+# remove duplicates
+filter_content.run()

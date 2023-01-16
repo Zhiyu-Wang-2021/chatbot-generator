@@ -5,7 +5,10 @@
 # critical situation: have multiple places of the practice(differet number for different location)
 # https://www.dorkingmedicalpractice.nhs.uk/practice-information/contact-us/
 # possible work around:do it in get_addr just find 4 phrases/sentences after 
-
+import os
+import sys
+workingdir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, workingdir)
 import json
 # import phonenumbers 
 # from ukpostcodeutils import validation
@@ -15,7 +18,7 @@ from ibm_watson.natural_language_understanding_v1 \
     import Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check phone number and postcode
 import match_content
-# pip
+
 def run(output_dir):
     # 1.ibm nlu extract every phrases and sentences
     apikey = 'VUnjUCbBl13yk9ykzMuWPYDzgzT2oQrJTD-NzvEJJHK1'
@@ -30,7 +33,7 @@ def run(output_dir):
 
 
 
-    f = open('content.txt', 'r', encoding='utf-8')
+    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
         text=f.read(),

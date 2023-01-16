@@ -1,4 +1,8 @@
 import re
+import os
+import sys
+workingdir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, workingdir)
 import phonenumbers # check phone number
 
 def spaceReplace(i):
@@ -56,3 +60,7 @@ def match_time(text):
         return True
     else:
         return False    
+
+text = 'DL13 1QW\n01388 528555'
+for m in match_phonenumber_it(text):
+    print(m.raw_string)

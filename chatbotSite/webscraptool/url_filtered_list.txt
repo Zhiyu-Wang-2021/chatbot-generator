@@ -1,3 +1,2 @@
-title:
-	Contact Form
-url:https://www.therossingtonpractice.nhs.uk/contact_dlg1.aspx?p=C86015
+title:Contact the Practice | White Lodge Medical Practiceurl:https://www.whitelodgemedicalpractice.nhs.uk/navigator/contact-the-practice/
+title:Contact Us | White Lodge Medical Practiceurl:https://www.whitelodgemedicalpractice.nhs.uk/practice-information/contact-us/

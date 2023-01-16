@@ -6,7 +6,10 @@
 # keyword:
 # street/road/side/Court/Place/Avenue/Lane/Common/Hall/Hill/Hoo/Gardens/College/Drive/Ward/Close/Centre/Oval/Grove
 # practice/Surgery/Medical/Hospital/Heath
-
+import os
+import sys
+workingdir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, workingdir)
 import json
 # from ukpostcodeutils import validation 
 from ibm_watson import NaturalLanguageUnderstandingV1
@@ -15,7 +18,6 @@ from ibm_watson.natural_language_understanding_v1 \
     import EntitiesOptions,Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check post code    
 import match_content
-
  
 def run(output_dir):
     # ibm nlu extract every phrases and sentences
@@ -31,7 +33,7 @@ def run(output_dir):
 
 
 
-    f = open('content.txt', 'r', encoding='utf-8')
+    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
         text=f.read(),
@@ -91,11 +93,13 @@ def run(output_dir):
         # check if they put telephone number at the end of the location
         for i in range(1, 5):
             # usually in format tel:xxxxxx out of hour:xxxxxxx
+            # if not at the end of the page then go forward 5 phrases to check if phone number exists 
             if len(sentences_dict['syntax']['sentences']) -1 >= cur_pos + i and\
                 match_content.match_phonenumber(sentences_dict['syntax']['sentences'][cur_pos + i]['text']):
 
+                # also get text one word before phonenum in order to get tag(e.g. tel:/out of hour:)
                 contact_text = contact_text + sentences_dict['syntax']['sentences'][cur_pos + i - 1]['text']\
-                            +sentences_dict['syntax']['sentences'][cur_pos + i]['text'] + '\n'
+                            + '\n' + sentences_dict['syntax']['sentences'][cur_pos + i]['text'] + '\n'
 
         while(True):
             cur_text = sentences_dict['syntax']['sentences'][cur_pos]['text']

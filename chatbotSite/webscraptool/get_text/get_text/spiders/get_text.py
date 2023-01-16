@@ -10,7 +10,7 @@ class PostSpider(scrapy.Spider):
 
     def __init__(self, url=None, *args, **kwargs):
         super(PostSpider, self).__init__(*args, **kwargs)
-        filename = '../content.txt'
+
         self.start_urls = [f'{url}']
 
     def parse(self, response):

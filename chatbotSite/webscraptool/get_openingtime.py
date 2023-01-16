@@ -2,7 +2,10 @@
 # 2.find the location where a time(e.g.18:00) is given then match one word/sentence before the time
 # 3.read before the first time period until keyword is detected as there is always a title on the front
 # this part will handle the problem of multiple surgery and filter out Consultation Consulting
-
+import os
+import sys
+workingdir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, workingdir)
 import json
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -25,7 +28,7 @@ def run(output_dir):
 
 
 
-    f = open('content.txt', 'r', encoding='utf-8')
+    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
         text=f.read(),

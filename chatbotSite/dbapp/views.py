@@ -1,4 +1,5 @@
 from bson import ObjectId
+from bson.json_util import dumps
 from django.shortcuts import HttpResponse
 import json
 from dialogJson.answers import Answers
@@ -6,6 +7,7 @@ from dialogJson.dialog_json import DialogJson
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
 from env import password
+from webscraptool.get_answer_dict import get_dummy_answer, get_answer
 
 client = MongoClient("mongodb+srv://csp_chatbot_db:" + password + "@csp-chatbot.jwqkx3s.mongodb.net/?retryWrites=true&w=majority")
 dialog_db = client["dialog_json"]
@@ -18,20 +20,14 @@ def generate_json(request):  # POST - provide url and generate
     data = json.loads(request.body)
     print(data)  # only url and ref
     # use the webscraptool to get data from url
-    data["answers"] = {
-        'phone': [{
-                'title': '', 'num': 'Tel: 01302 868421'
-            }],
-        'openingtimepage': [{
-                'title': 'Opening Times',
-                'time': 'Opening Times\nPlease note on two Wednesdays per month we close at 12:00 for training.\nMonday\n07.00 - 18:00\nTuesday\n08:00 - 20.30\nWednesday\n08:00 - 18:00\nThursday\n07:00 - 18:00\nFriday\n08:00 - 18:00\n'
-            }],
-        'contactpage': [{
-                'postcode': 'Doncaster, DN11 0LP',
-                'address': 'Rossington\nGrange Lane\nThe Rossington Practice\n',
-                'contact': 'Doncaster, DN11 0LPTel: 01302 868421\n'
-            }]
-        }
+    # {
+    #     'phone': ['020 8363 4156'],
+    #     'openingtimepage':
+    #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
+    #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
+    # }
+    # data["answers"] = get_dummy_answer(data["url"])
+    data["answers"] = get_answer(data["url"])
     ans = Answers(data)
 
     dj = DialogJson(ans)
@@ -68,9 +64,10 @@ def get_json(request):  # GET - get by id
         return HttpResponse("Not found")
 
 
+@csrf_exempt
 def list_url(request):  # GET
     urls = website_collection.find({})
-    return HttpResponse(urls)
+    return HttpResponse(dumps(urls))
 
 
 @csrf_exempt

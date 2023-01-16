@@ -102,8 +102,14 @@ class DialogJson:
     #     "previous_sibling": "Welcome"
     # }, ...],
     def _dialog_nodes(self):
+        # {
+        #     'phone': ['020 8363 4156'],
+        #     'openingtimepage':
+        #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
+        #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
+        # }
         loc_info = self.answers.location[0]["address"] + self.answers.location[0]["postcode"]
-        hour_info = self.answers.operation_hour[0]["time"]
+        hour_info = self.answers.operation_hour[0]
         result_raw = [
             self._welcome_node(),
             self._dialog_node_multi_condition(

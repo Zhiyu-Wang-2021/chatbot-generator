@@ -4,21 +4,23 @@ import subprocess
 from os.path import exists
 import os
 
-
 def crawl(url):
     # delete previous output json file
-    output_dir = './url_crawler/outputfile.json' 
+    workingdir = os.path.dirname(os.path.abspath(__file__))
+
+    output_dir = workingdir + '/url_crawler/outputfile.json' 
     file_exists = exists(output_dir)
 
     if file_exists: os.remove(output_dir)
-    cmdline = f'cd url_crawler && scrapy crawl crawl_url -a url={url} -t json -o outputfile.json'
+    cmdline = 'cd ' + workingdir + f'\\url_crawler && scrapy crawl crawl_url -a url={url} -t json -o outputfile.json'
 
     # use subprocess because os will always jump to next step without finishing the cmd command
     p = subprocess.Popen(cmdline, shell=True) 
     return_code = p.wait()
 
 def get_text(url):
-    cmdline = f'cd get_text && scrapy crawl get_text -a url={url}'
+    workingdir = os.path.dirname(os.path.abspath(__file__))
+    cmdline = 'cd ' + workingdir + f'\\get_text && scrapy crawl get_text -a url={url}'
     p = subprocess.Popen(cmdline, shell=True)
     return_code = p.wait()
 
@@ -33,8 +35,9 @@ def extract_url(json_dir):
         url_text = url_text + temp_url + '\n'
 
     json_file.close()
-
-    with open("url_list.txt", "w") as f:
+    
+    workingdir = os.path.dirname(os.path.abspath(__file__))
+    with open(workingdir + '\\' +  "url_list.txt", "w") as f:
         f.write(url_text)
 
 def filter_url(json_dir, keywords):
@@ -57,7 +60,8 @@ def filter_url(json_dir, keywords):
 
     json_file.close()
     if url_filtered!='':
-        with open("url_filtered_list.txt", "w") as f:
+        workingdir = os.path.dirname(os.path.abspath(__file__))
+        with open(workingdir + '\\' + "url_filtered_list.txt", "w") as f:
             f.write(url_filtered)  
         return True  
     else:
