@@ -5,7 +5,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
 
-class NameSpider(CrawlSpider):
+class Url_Crawler(CrawlSpider):
     name = 'crawl_url'
     rules = (
         Rule(LinkExtractor(allow=()), callback='parse_item', follow=True),
@@ -19,7 +19,7 @@ class NameSpider(CrawlSpider):
     
     # allow passing url as an attribute through command line
     def __init__(self, url=None, *args, **kwargs):
-        super(NameSpider, self).__init__(*args, **kwargs)
+        super(Url_Crawler, self).__init__(*args, **kwargs)
         self.start_urls = [f'http://{url}/']
         self.allowed_domains = [f'{url}']
 
