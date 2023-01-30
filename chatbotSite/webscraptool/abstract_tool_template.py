@@ -24,7 +24,7 @@ class Abstract_Tool(ABC):
         # [{'title','link','category','keyword','affix'},{},....]
         # all keywords should be as follow
         # ['keyword1', 'keyword2',.....]
-        
+
         # ***note that check affix is not implemented yet
 
 
@@ -36,7 +36,8 @@ class Abstract_Tool(ABC):
         # return content_dict = {'category','text we scraped'}
         pass
 
-    def filter_text(self, content_dict) -> None:
+    def filter_text(self, content_dict) -> dict:
         # filter content by 'category'
-        # return filtered_content_dict = {"category":"content"}
+        # remove duplication
+        # return filtered_content_dict = {"category","content"}
         pass

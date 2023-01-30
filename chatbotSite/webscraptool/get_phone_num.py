@@ -7,8 +7,6 @@
 # possible work around:do it in get_addr just find 4 phrases/sentences after 
 import os
 import sys
-workingdir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(1, workingdir)
 import json
 # import phonenumbers 
 # from ukpostcodeutils import validation
@@ -17,9 +15,9 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \
     import Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check phone number and postcode
-import match_content
+import webscraptool.match_content as match_content
 
-def run(output_dir):
+def run(txt):
     # 1.ibm nlu extract every phrases and sentences
     apikey = 'VUnjUCbBl13yk9ykzMuWPYDzgzT2oQrJTD-NzvEJJHK1'
     apiurl = 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/c6ac0ee5-39c8-4704-8cfe-7811f664ed87'
@@ -33,10 +31,9 @@ def run(output_dir):
 
 
 
-    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
-        text=f.read(),
+        text=txt,
         features=Features(
         syntax=SyntaxOptions(
             sentences=True,
@@ -71,13 +68,8 @@ def run(output_dir):
                # data_extracted = data_extracted + d_pre['text'] + '\n' + d['text'] + '\n'
         d_pre = d
         cur_index = cur_index + 1
-    f = open(output_dir, 'a', encoding='utf-8')
     # f.write('\n')
     # f.write(data_extracted)
     # if dict not empty write to json
-    
-    if len(phone_nums_dict) != 0:
-        json_object = json.dumps(phone_nums_dict, indent=4)
-        f.write(json_object)
+    return phone_nums_dict
 
-    print(data_extracted)

@@ -4,17 +4,15 @@
 # this part will handle the problem of multiple surgery and filter out Consultation Consulting
 import os
 import sys
-workingdir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(1, workingdir)
 import json
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \
     import Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check phone number and postcode
-import match_content
+import webscraptool.match_content as match_content
 
-def run(output_dir):
+def run(txt):
     # 1.ibm nlu extract every phrases and sentences
     apikey = 'VUnjUCbBl13yk9ykzMuWPYDzgzT2oQrJTD-NzvEJJHK1'
     apiurl = 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/c6ac0ee5-39c8-4704-8cfe-7811f664ed87'
@@ -28,10 +26,9 @@ def run(output_dir):
 
 
 
-    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
-        text=f.read(),
+        text=txt,
         features=Features(
         syntax=SyntaxOptions(
             sentences=True,
@@ -144,7 +141,7 @@ def run(output_dir):
     cur_index = 0
     openingtime_dict = []
 
-    f = open(output_dir, 'a', encoding='utf-8')
+
     print('--------opening hour---------------')
     for sequence_pos in filtered_group:
         title = ''
@@ -183,7 +180,6 @@ def run(output_dir):
 
         cur_index = cur_index + 1
 
-    if len(openingtime_dict) != 0:
-        json_object = json.dumps(openingtime_dict, indent=4)    
-        f.write(json_object)
+    return openingtime_dict
+
     

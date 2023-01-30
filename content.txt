@@ -43,32 +43,34 @@ Search the website:
 Search
 White Lodge Medical Practice
 Back
-Opening Hours
-We are currently 
-closed.
-Monday
-08:00-18:30
-Tuesday
-08:00-18:30
-Wednesday
-08:00-18:30
-Thursday
-08:00-18:30
-Friday
-08:00-18:30
-Saturday
-Closed
-Sunday
-Closed
-Out of Hours Service
-NHS 111
-If you require medical assistance outside normal practice hours, please contact the NHS 111 service by calling 111. The service is open 24 hours a day, 7 days a week and all calls to the service are free. If you contact the service, you may be;
-Given telephone advice
-Asked to attend a local Out of hours centre for a consultation
-Referred to a local Accident and Emergency department, or
-Offered a home visit by a deputising Doctor
-In a Emergency
-In the event of a medical emergency, please call 999 immediately to contact the ambulance service.
+Contact the Practice
+Please do not use this service for any urgent medical queries as this service is only monitored during 
+practice working hours
+.
+Your question will be passed to an appropriate member of staff for a response. We aim to respond to all questions within two working days.
+If you do have an urgent medical query you should telephone the surgery or contact the out of hours service by calling 111. In an emergency please contact 999.
+Contact the Practice
+Contact the Practice
+If you are human, leave this field blank.
+Full Name:
+        
+*
+Date of Birth:
+        
+*
+Please use this date format: DD/MM/YYYY.
+Phone Number:
+        
+Email Address:
+        
+*
+Any responses we send will go to this email address.
+Named GP (if known):
+        
+Message:
+        
+*
+ I confirm that my enquiry is not urgent, and it may take up to 2 working days before I receive a reply.
 View practice news 
 Practice Relocation
 We are relocating to 105-109 Chase Side, Enfield, EN2 6NL on the 13th of December 2021

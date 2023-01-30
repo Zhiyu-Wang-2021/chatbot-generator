@@ -6,6 +6,12 @@ from webscraptool.url_crawler.url_crawler.spiders.crawl_url import Url_Crawler
 from webscraptool.get_text.get_text.spiders.get_text import Scrape_Text
 from scrapy.crawler import CrawlerProcess
 
+import webscraptool.get_addr as get_addr
+import webscraptool.get_openingtime as get_openingtime
+import webscraptool.get_phone_num as get_phone_num
+
+import webscraptool.filter_content as filter_content
+
 class Tool(Abstract_Tool):
     def __init__(self) -> None:
         super().__init__()
@@ -79,5 +85,22 @@ class Tool(Abstract_Tool):
 
         return {'category':filtered_urls[0]['category'], 'text':r}
     
-    def filter_text(self, content_dict) -> None:
-        pass
+    def filter_text(self, content_dict) -> dict:
+        categories = {'openingtime':1,'address':2,'phonenumber':3}
+        i = categories.get(content_dict['category'])
+        result = {}
+
+        if i == 1:
+            result = get_openingtime.run(content_dict['text'])
+            result = filter_content.openingtime(result)
+
+        if i == 2:
+            result = get_addr.run(content_dict['text']) 
+            result = filter_content.addr(result)
+            
+
+        if i == 3:
+            result = get_phone_num.run(content_dict['text']) 
+            result = filter_content.phonenumber(result)
+
+        return {'category':content_dict['category'], 'filtered_text':result}
