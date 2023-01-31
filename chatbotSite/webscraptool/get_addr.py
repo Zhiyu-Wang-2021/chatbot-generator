@@ -8,8 +8,7 @@
 # practice/Surgery/Medical/Hospital/Heath
 import os
 import sys
-workingdir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(1, workingdir)
+
 import json
 # from ukpostcodeutils import validation 
 from ibm_watson import NaturalLanguageUnderstandingV1
@@ -17,9 +16,9 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \
     import EntitiesOptions,Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check post code    
-import match_content
+import webscraptool.match_content as match_content
  
-def run(output_dir):
+def run(txt):
     # ibm nlu extract every phrases and sentences
     apikey = 'VUnjUCbBl13yk9ykzMuWPYDzgzT2oQrJTD-NzvEJJHK1'
     apiurl = 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/c6ac0ee5-39c8-4704-8cfe-7811f664ed87'
@@ -32,11 +31,9 @@ def run(output_dir):
     natural_language_understanding.set_service_url(apiurl)
 
 
-
-    f = open(workingdir + '\\' + 'content.txt', 'r', encoding='utf-8')
     # only get sentences
     response = natural_language_understanding.analyze(
-        text=f.read(),
+        text=txt,
         features=Features(
         syntax=SyntaxOptions(
             sentences=True,
@@ -139,12 +136,9 @@ def run(output_dir):
         })
 
     # output to json if dict not empty
-    f = open(output_dir, 'a', encoding='utf-8')
-    print('--------address---------\n')
 
-    if len(addr_dict) != 0:
-        json_object = json.dumps(addr_dict, indent=4)    
-        f.write(json_object)
+
+        return addr_dict
 #    for d in addr_dict:
 #        f.write(d['address'] + d['postcode'] + '\n' + d['contact'])
 #        print(d['address'],d['postcode'],'\n',d['contact'])

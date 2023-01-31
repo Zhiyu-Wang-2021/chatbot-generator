@@ -4,24 +4,25 @@ import scrapy
 import re
 import os
 
-class PostSpider(scrapy.Spider):
+class Scrape_Text(scrapy.Spider):
 
     name = 'get_text'
 
     def __init__(self, url=None, *args, **kwargs):
-        super(PostSpider, self).__init__(*args, **kwargs)
-
+        super(Scrape_Text, self).__init__(*args, **kwargs)
+        # remove 'http://' prefix to avoid causing error
         self.start_urls = [f'{url}']
 
     def parse(self, response):
-        filename = '../content.txt'
         l1 = response.selector.xpath('//body/descendant-or-self::*[not(self::script | self::style)]/text()').getall()
         content = ''
-
+        item = {}
+        
         for text in l1:
             if not str.isspace(text):
                 content = content + text + '\n'
 
-        f = open (filename, 'a', encoding='utf-8')
-        f.write(content)
-        f.close()
+        with open('../content.txt','w') as f:
+            f.write(content)
+
+        yield {'text':content}
