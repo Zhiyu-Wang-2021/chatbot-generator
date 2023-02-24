@@ -12,6 +12,7 @@ import webscraptool.get_phone_num as get_phone_num
 
 import webscraptool.filter_content as filter_content
 
+
 class Tool(Abstract_Tool):
     def __init__(self) -> None:
         super().__init__()
@@ -36,11 +37,10 @@ class Tool(Abstract_Tool):
         del sys.modules['twisted.internet.reactor']
         from twisted.internet import reactor
         from twisted.internet import default
-        default.install()    
+        default.install()
         # the script will block here until the crawling is finished
 
         self.url_dict = results
-
 
     def filter_url(self, keywords, affixs, category) -> list:
         result = []
@@ -49,22 +49,20 @@ class Tool(Abstract_Tool):
         for url in self.url_dict:
             for keyword in keywords:
                 if keyword in url['title']:
-                    result.append({'title':url['title'], 'url':url['url'], 'category':category, 'keyword':keyword})
+                    result.append({'title': url['title'], 'url': url['url'], 'category': category, 'keyword': keyword})
 
         return result
-    
+
     def scrape_text(self, filtered_urls) -> dict:
 
         results = []
+
         # I don't know why but only list can be used here.
         # If you use string you will get empty result...
         def crawler_results(signal, sender, item, response, spider):
             results.append(item['text'])
-        
 
         for url in filtered_urls:
-
-
             dispatcher.connect(crawler_results, signal=signals.item_scraped)
             # remove 'http://' or scrapy can not recognized the link
             url_replaced = url['url'].replace('http://', '')
@@ -77,16 +75,16 @@ class Tool(Abstract_Tool):
             del sys.modules['twisted.internet.reactor']
             from twisted.internet import reactor
             from twisted.internet import default
-            default.install()   
-        
+            default.install()
+
         r = ''
         for result in results:
             r = r + result
 
-        return {'category':filtered_urls[0]['category'], 'text':r}
-    
+        return {'category': filtered_urls[0]['category'], 'text': r}
+
     def filter_text(self, content_dict) -> dict:
-        categories = {'openingtime':1,'address':2,'phonenumber':3}
+        categories = {'openingtime': 1, 'address': 2, 'phonenumber': 3}
         i = categories.get(content_dict['category'])
         result = {}
 
@@ -95,12 +93,11 @@ class Tool(Abstract_Tool):
             result = filter_content.openingtime(result)
 
         if i == 2:
-            result = get_addr.run(content_dict['text']) 
+            result = get_addr.run(content_dict['text'])
             result = filter_content.addr(result)
-            
 
         if i == 3:
-            result = get_phone_num.run(content_dict['text']) 
+            result = get_phone_num.run(content_dict['text'])
             result = filter_content.phonenumber(result)
 
-        return {'category':content_dict['category'], 'filtered_text':result}
+        return {'category': content_dict['category'], 'filtered_text': result}

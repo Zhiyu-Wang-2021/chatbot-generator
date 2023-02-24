@@ -21,3 +21,9 @@ class Answers:
             return self.operation_hour[0]
         else:
             return "Not Found"
+
+    def get_phone_info(self):
+        if len(self.phone) > 0:
+            return self.phone[0]
+        else:
+            return "Not Found"

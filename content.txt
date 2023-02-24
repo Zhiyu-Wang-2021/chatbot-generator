@@ -22,7 +22,7 @@ CQC
  Inspected and Rated
 Good
 We are currently 
-closed.
+open.
 View all opening hours
 Practice Information 
 New Patient Registration
@@ -35,7 +35,7 @@ Disclaimer
 Copyright
 Accessibility
 Cookie Policy
-FootFall © Silicon Practice 2023
+FootFall Â© Silicon Practice 2023
 Home
 Get Help
 Online Requests
@@ -47,7 +47,7 @@ Contact the Practice
 Please do not use this service for any urgent medical queries as this service is only monitored during 
 practice working hours
 .
-Your question will be passed to an appropriate member of staff for a response. We aim to respond to all questions within two working days.
+Your question will be passed to an appropriate member of staff for a response.Â We aim to respond to all questions within two working days.
 If you do have an urgent medical query you should telephone the surgery or contact the out of hours service by calling 111. In an emergency please contact 999.
 Contact the Practice
 Contact the Practice
@@ -80,8 +80,8 @@ Find out more
 Dismiss
 Close
 Important -
-For the latest Covid-19 advice please visit www.nhs.uk. If you think you may have Covid-19, have travelled to an affected area.
-
+For the latest Covid-19 advice please visit www.nhs.uk. If you think you may have Covid-19, have travelled to an affected area.
+
 Please do not go to a GP surgery, pharmacy or hos... 
 Find out more
 Dismiss
