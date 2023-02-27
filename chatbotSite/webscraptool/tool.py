@@ -48,7 +48,7 @@ class Tool(Abstract_Tool):
         # check if keyword is in title
         for url in self.url_dict:
             for keyword in keywords:
-                if keyword in url['title']:
+                if url['title'] is not None and keyword in url['title']:
                     result.append({'title':url['title'], 'url':url['url'], 'category':category, 'keyword':keyword})
 
         return result
@@ -98,7 +98,6 @@ class Tool(Abstract_Tool):
             result = get_addr.run(content_dict['text']) 
             result = filter_content.addr(result)
             
-
         if i == 3:
             result = get_phone_num.run(content_dict['text']) 
             result = filter_content.phonenumber(result)

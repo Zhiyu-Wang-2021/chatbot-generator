@@ -1,7 +1,6 @@
 
 import time
-
-
+import bingGetAnswer.bing_azure_function_api as bingGetAnswer
 
 
 # www.gosh.nhs.uk
@@ -34,18 +33,19 @@ def get_answer(url):
     
     tool = Tool()
     tool.setup(url)
-    a = tool.filter_url(keywords=filter_keywords1, affixs=[], category='openingtime')
-    b = tool.filter_url(keywords=filter_keywords2, affixs=[], category='address')
-    c = tool.filter_url(keywords=filter_keywords3, affixs=[], category='phonenumber')
-    aaa = tool.scrape_text(a)
-    bbb = tool.scrape_text(b)
-    ccc = tool.scrape_text(c)
+    openingtime_url = tool.filter_url(keywords=filter_keywords1, affixs=[], category='openingtime')
+    address_url = tool.filter_url(keywords=filter_keywords2, affixs=[], category='address')
+    phonenumber_url = tool.filter_url(keywords=filter_keywords3, affixs=[], category='phonenumber')
+    openingtime_text = tool.scrape_text(openingtime_url)
+    address_text = tool.scrape_text(address_url)
+    phonenumber_text = tool.scrape_text(phonenumber_url)
     
     
     return {
-        'phone': tool.filter_text(ccc)['filtered_text'],
-        'openingtimepage':tool.filter_text(aaa)['filtered_text'],
-        'contactpage': tool.filter_text(bbb)['filtered_text']
+        'phone': tool.filter_text(phonenumber_text)['filtered_text'],
+        'openingtimepage':tool.filter_text(openingtime_text)['filtered_text'],
+        'contactpage': tool.filter_text(address_text)['filtered_text'],
+        'appointment': bingGetAnswer.get_bing_result(url, 'how do I make an appointment?')
     }
 
 

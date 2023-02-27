@@ -1,8 +1,4 @@
 import re
-import os
-import sys
-workingdir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(1, workingdir)
 import phonenumbers # check phone number
 
 def spaceReplace(i):
