@@ -50,9 +50,11 @@ class Tool(Abstract_Tool):
             for keyword in keywords:
                 if keyword in url['title']:
                     result.append({'title': url['title'], 'url': url['url'], 'category': category, 'keyword': keyword})
+                if url['title'] is not None and keyword in url['title']:
+                    result.append({'title':url['title'], 'url':url['url'], 'category':category, 'keyword':keyword})
 
         return result
-
+    
     def scrape_text(self, filtered_urls) -> dict:
 
         results = []
@@ -75,8 +77,8 @@ class Tool(Abstract_Tool):
             del sys.modules['twisted.internet.reactor']
             from twisted.internet import reactor
             from twisted.internet import default
-            default.install()
-
+            default.install()   
+        
         r = ''
         for result in results:
             r = r + result

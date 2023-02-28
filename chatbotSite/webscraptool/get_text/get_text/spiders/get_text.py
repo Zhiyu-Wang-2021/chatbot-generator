@@ -22,7 +22,5 @@ class Scrape_Text(scrapy.Spider):
             if not str.isspace(text):
                 content = content + text + '\n'
 
-        with open('../content.txt','w') as f:
-            f.write(content)
 
         yield {'text':content}

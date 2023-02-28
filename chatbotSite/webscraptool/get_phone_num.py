@@ -5,11 +5,7 @@
 # critical situation: have multiple places of the practice(differet number for different location)
 # https://www.dorkingmedicalpractice.nhs.uk/practice-information/contact-us/
 # possible work around:do it in get_addr just find 4 phrases/sentences after 
-import os
-import sys
-import json
-# import phonenumbers 
-# from ukpostcodeutils import validation
+
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \

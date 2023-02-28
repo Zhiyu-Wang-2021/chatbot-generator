@@ -6,11 +6,8 @@
 # keyword:
 # street/road/side/Court/Place/Avenue/Lane/Common/Hall/Hill/Hoo/Gardens/College/Drive/Ward/Close/Centre/Oval/Grove
 # practice/Surgery/Medical/Hospital/Heath
-import os
-import sys
 
-import json
-# from ukpostcodeutils import validation 
+
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \
