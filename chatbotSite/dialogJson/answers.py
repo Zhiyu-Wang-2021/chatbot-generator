@@ -9,6 +9,10 @@ class Answers:
         self.operation_hour = data["answers"]["openingtimepage"]
         self.location = data["answers"]["contactpage"]
         self.phone = data["answers"]["phone"]
+        self.appointment = data["answers"]["appointment"]
+
+    def get_appointment_info(self):
+        return self.appointment[0]
 
     def get_loc_info(self):
         if len(self.location) > 0:

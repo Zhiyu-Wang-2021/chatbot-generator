@@ -21,7 +21,8 @@ def get_dummy_answer(url):
         'phone': ['020 8363 4156'],
         'openingtimepage':
             ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
-        'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
+        'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}],
+        'appointment': ["appointment dummy data", 0]
     }
 
 
