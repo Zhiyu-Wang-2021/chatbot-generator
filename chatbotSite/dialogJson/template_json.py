@@ -73,6 +73,30 @@ template = {
             "description": ""
         },
         {
+            "intent": "greetings",
+            "examples": [
+                {
+                    "text": "greetings"
+                },
+                {
+                    "text": "hello"
+                },
+                {
+                    "text": "hi"
+                },
+                {
+                    "text": "how's it going"
+                },
+                {
+                    "text": "nice to meet you"
+                },
+                {
+                    "text": "what's up"
+                }
+            ],
+            "description": ""
+        },
+        {
             "intent": "hours_info",
             "examples": [
                 {
@@ -295,7 +319,7 @@ template = {
             },
             "conditions": "#location_info && !@specific_location",
             "dialog_node": "Location Info",
-            "previous_sibling": "Welcome"
+            "previous_sibling": "node_3_1677777872422"
         },
         {
             "type": "standard",
@@ -345,6 +369,26 @@ template = {
             "conditions": "#appointment && !@specific_location",
             "dialog_node": "node_10_1677578129201",
             "previous_sibling": "node_5_1677172471791"
+        },
+        {
+            "type": "standard",
+            "title": "greetings",
+            "output": {
+                "generic": [
+                    {
+                        "values": [
+                            {
+                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
+                            }
+                        ],
+                        "response_type": "text",
+                        "selection_policy": "sequential"
+                    }
+                ]
+            },
+            "conditions": "#greetings",
+            "dialog_node": "node_3_1677777872422",
+            "previous_sibling": "Welcome"
         },
         {
             "type": "standard",
@@ -461,7 +505,7 @@ template = {
                     {
                         "values": [
                             {
-                                "text": "Hello, how can I help you?"
+                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
                             }
                         ],
                         "response_type": "text",

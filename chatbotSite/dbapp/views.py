@@ -72,7 +72,7 @@ def generate_json_from_existing(request):  # POST - provide url and generate
         try:
             node_title = template["dialog_nodes"][index]["title"]
             if node_title == "Anything else":
-                template["dialog_nodes"][index]["actions"][0]["parameters"]["site"] = data["site"]
+                template["dialog_nodes"][index]["actions"][0]["parameters"]["site"] = data["url"]
             elif node_title == "Hours Info":
                 template["dialog_nodes"][index]["output"]["generic"][0]["values"][0]["text"] = ans.get_hours_info()
             elif node_title == "Phone Info":

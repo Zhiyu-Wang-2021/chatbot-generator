@@ -46,7 +46,7 @@ def get_answer(url):
         'phone': tool.filter_text(phonenumber_text)['filtered_text'],
         'openingtimepage':tool.filter_text(openingtime_text)['filtered_text'],
         'contactpage': tool.filter_text(address_text)['filtered_text'],
-        'appointment': bingGetAnswer.get_bing_result(url, 'how do I make an appointment?')
+        'appointment': bingGetAnswer.get_bing_result(url, 'how to make an appointment?')
     }
 
 
