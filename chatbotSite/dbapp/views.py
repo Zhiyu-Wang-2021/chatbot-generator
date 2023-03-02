@@ -10,7 +10,7 @@ from pymongo import MongoClient
 from env import password
 from webscraptool.get_answer_dict import get_dummy_answer, get_answer
 
-USE_DUMMY_DATA = True
+USE_DUMMY_DATA = False
 
 client = MongoClient("mongodb+srv://csp_chatbot_db:" + password + "@csp-chatbot.jwqkx3s.mongodb.net/?retryWrites=true&w=majority")
 dialog_db = client["dialog_json"]
