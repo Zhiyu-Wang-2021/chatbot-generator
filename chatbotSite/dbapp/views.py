@@ -59,7 +59,11 @@ def generate_json_from_existing(request):  # POST - provide url and generate
     if USE_DUMMY_DATA:
         data["answers"] = get_dummy_answer(data["url"])
     else:
-        data["answers"] = get_answer(data["url"])
+        try:
+            data["answers"] = get_answer(data["url"])
+        except IndexError:
+            print('index error')
+    print(data)
     ans = Answers(data)
 
     template = dialog_json_template
