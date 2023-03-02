@@ -89,6 +89,7 @@ def generate_json_from_existing(request):  # POST - provide url and generate
     new_values = {"$set": template}
     dialog_collection.update_one(dialog_filter, new_values)
 
+    print('successfully generated the Dialog JSON and ready to send Http response')
     return HttpResponse("success")
 
 
