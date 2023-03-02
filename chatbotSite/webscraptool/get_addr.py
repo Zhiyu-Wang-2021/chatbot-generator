@@ -17,8 +17,8 @@ import webscraptool.match_content as match_content
  
 def run(txt):
     # ibm nlu extract every phrases and sentences
-    apikey = 'VUnjUCbBl13yk9ykzMuWPYDzgzT2oQrJTD-NzvEJJHK1'
-    apiurl = 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/c6ac0ee5-39c8-4704-8cfe-7811f664ed87'
+    apikey = 'Iig5IogwUhp2dIo1FqAUEjkka7OoC42qXbWHWucIU9oU'
+    apiurl = 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/2019387f-a518-46b0-aa72-ccc03cdf67c8'
     authenticator = IAMAuthenticator(apikey)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         version='2022-04-07',

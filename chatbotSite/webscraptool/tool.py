@@ -48,8 +48,6 @@ class Tool(Abstract_Tool):
         # check if keyword is in title
         for url in self.url_dict:
             for keyword in keywords:
-                if keyword in url['title']:
-                    result.append({'title': url['title'], 'url': url['url'], 'category': category, 'keyword': keyword})
                 if url['title'] is not None and keyword in url['title']:
                     result.append({'title':url['title'], 'url':url['url'], 'category':category, 'keyword':keyword})
 
@@ -82,13 +80,19 @@ class Tool(Abstract_Tool):
         r = ''
         for result in results:
             r = r + result
+        if len(filtered_urls) != 0:
+            return {'category':filtered_urls[0]['category'], 'text':r}
 
-        return {'category': filtered_urls[0]['category'], 'text': r}
-
+        # return null if no url crawled
+        return {'category':'none', 'text':r}
+    
     def filter_text(self, content_dict) -> dict:
-        categories = {'openingtime': 1, 'address': 2, 'phonenumber': 3}
+        categories = {'none':0, 'openingtime':1,'address':2,'phonenumber':3}
         i = categories.get(content_dict['category'])
         result = {}
+
+        if i == 0:
+            result = 'null'
 
         if i == 1:
             result = get_openingtime.run(content_dict['text'])
