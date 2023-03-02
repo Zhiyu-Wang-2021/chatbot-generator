@@ -378,7 +378,7 @@ template = {
                     {
                         "values": [
                             {
-                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
+                                "text": "Hello! I can answer your questions based on the information provided on this website. How can I help you?"
                             }
                         ],
                         "response_type": "text",
@@ -505,7 +505,7 @@ template = {
                     {
                         "values": [
                             {
-                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
+                                "text": "Hello! I can answer your questions based on the information provided on this website. How can I help you?"
                             }
                         ],
                         "response_type": "text",
