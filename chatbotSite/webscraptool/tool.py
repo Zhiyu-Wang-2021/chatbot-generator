@@ -5,6 +5,8 @@ from scrapy.signalmanager import dispatcher
 from webscraptool.url_crawler.url_crawler.spiders.crawl_url import Url_Crawler
 from webscraptool.get_text.get_text.spiders.get_text import Scrape_Text
 from scrapy.crawler import CrawlerProcess
+from scrapy import crawler
+from scrapy.exceptions import CloseSpider
 
 import webscraptool.get_addr as get_addr
 import webscraptool.get_openingtime as get_openingtime
@@ -27,7 +29,6 @@ class Tool(Abstract_Tool):
             results.append(item)
 
         dispatcher.connect(crawler_results, signal=signals.item_scraped)
-
         process = CrawlerProcess(get_project_settings())
         process.crawl(Url_Crawler, url=self.mainsite)
         process.start()
@@ -41,6 +42,9 @@ class Tool(Abstract_Tool):
         # the script will block here until the crawling is finished
 
         self.url_dict = results
+           
+         
+    
 
     def filter_url(self, keywords, affixs, category) -> list:
         result = []
@@ -84,15 +88,15 @@ class Tool(Abstract_Tool):
             return {'category':filtered_urls[0]['category'], 'text':r}
 
         # return null if no url crawled
-        return {'category':'none', 'text':r}
+        return {'category':'', 'text':r}
     
     def filter_text(self, content_dict) -> dict:
-        categories = {'none':0, 'openingtime':1,'address':2,'phonenumber':3}
+        categories = {'':0, 'openingtime':1,'address':2,'phonenumber':3}
         i = categories.get(content_dict['category'])
         result = {}
 
         if i == 0:
-            result = 'null'
+            result = 'Sorry, I am not sure about this question based on the information on our website.'
 
         if i == 1:
             result = get_openingtime.run(content_dict['text'])
