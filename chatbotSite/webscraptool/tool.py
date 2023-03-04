@@ -96,7 +96,7 @@ class Tool(Abstract_Tool):
         result = {}
 
         if i == 0:
-            result = 'Sorry, I am not sure about this question based on the information on our website.'
+            result = ''
 
         if i == 1:
             result = get_openingtime.run(content_dict['text'])
