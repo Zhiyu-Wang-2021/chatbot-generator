@@ -15,19 +15,19 @@ class Answers:
         return self.appointment[0]
 
     def get_loc_info(self):
-        if len(self.location) > 0:
+        if len(self.location) > 0 and type(self.location)!=str:
             return self.location[0]["address"] + self.location[0]["postcode"]
         else:
             return "Not Found"
 
     def get_hours_info(self):
-        if len(self.operation_hour) > 0:
+        if len(self.operation_hour) > 0 and type(self.operation_hour)!=str:
             return self.operation_hour[0]
         else:
             return "Not Found"
 
     def get_phone_info(self):
-        if len(self.phone) > 0:
+        if len(self.phone) > 0 and type(self.phone)!=str:
             return self.phone[0]
         else:
             return "Not Found"
