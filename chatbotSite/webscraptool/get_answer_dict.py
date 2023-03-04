@@ -122,6 +122,9 @@ def get_answer(url):
             print('an error occur, try to restart scraping process...')
             time.sleep(1)
             connection_attempt = connection_attempt + 1
+
+    if not connection_attempt < max_connection_attempt:
+        appointment_text = ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
     
     
     return {
