@@ -49,7 +49,7 @@ class Tool(Abstract_Tool):
     def filter_url(self, keywords, affixs, category) -> list:
         result = []
         # add homepage
-        result.append({'title':'', 'url':'http://' + self.mainsite, 'category':category, 'keyword':''})
+        result.append({'title':'', 'url':'https://' + self.mainsite, 'category':category, 'keyword':''})
         
         # check if keyword is in title
         
