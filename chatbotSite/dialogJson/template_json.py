@@ -4,7 +4,16 @@ template = {
             "intent": "appointment",
             "examples": [
                 {
+                    "text": "appointment"
+                },
+                {
+                    "text": "book appointment"
+                },
+                {
                     "text": "Can I book an appointment?"
+                },
+                {
+                    "text": "do you know how to make an appointment"
                 },
                 {
                     "text": "How do I book an appointment"
@@ -14,6 +23,9 @@ template = {
                 },
                 {
                     "text": "how to get an appointment"
+                },
+                {
+                    "text": "how to see a doctor"
                 },
                 {
                     "text": "I want to book an appointment"
@@ -26,6 +38,12 @@ template = {
                 },
                 {
                     "text": "I want to see a doctor"
+                },
+                {
+                    "text": "make an appointment"
+                },
+                {
+                    "text": "tell me how to make an appointment"
                 }
             ],
             "description": ""
@@ -52,29 +70,11 @@ template = {
             "description": ""
         },
         {
-            "intent": "email",
-            "examples": [
-                {
-                    "text": "Contact this hospital by email address"
-                },
-                {
-                    "text": "Contact this trust by email address"
-                },
-                {
-                    "text": "hospital email address"
-                },
-                {
-                    "text": "trust email address"
-                },
-                {
-                    "text": "What is your email address?"
-                }
-            ],
-            "description": ""
-        },
-        {
             "intent": "greetings",
             "examples": [
+                {
+                    "text": "can you assist me?"
+                },
                 {
                     "text": "greetings"
                 },
@@ -85,10 +85,19 @@ template = {
                     "text": "hi"
                 },
                 {
+                    "text": "Hi! I'm Bob."
+                },
+                {
                     "text": "how's it going"
                 },
                 {
+                    "text": "How you can help me"
+                },
+                {
                     "text": "nice to meet you"
+                },
+                {
+                    "text": "what service do you provide"
                 },
                 {
                     "text": "what's up"
@@ -109,6 +118,12 @@ template = {
                     "text": "Are you open on Sundays?"
                 },
                 {
+                    "text": "hours of operation"
+                },
+                {
+                    "text": "opening hour"
+                },
+                {
                     "text": "What are your hours?"
                 },
                 {
@@ -118,16 +133,25 @@ template = {
                     "text": "What days are you closed on?"
                 },
                 {
+                    "text": "what is the opening hour of this practice"
+                },
+                {
                     "text": "What time are you open until?"
                 },
                 {
                     "text": "When are you open"
                 },
                 {
+                    "text": "When does this trust open"
+                },
+                {
                     "text": "When do you close"
                 },
                 {
                     "text": "When do you open"
+                },
+                {
+                    "text": "When will this hospital open"
                 }
             ],
             "description": "-"
@@ -136,7 +160,19 @@ template = {
             "intent": "location_info",
             "examples": [
                 {
+                    "text": "address"
+                },
+                {
+                    "text": "can you tell me where are you loacted"
+                },
+                {
+                    "text": "can you tell me your address"
+                },
+                {
                     "text": "Give me a list of locations"
+                },
+                {
+                    "text": "I wonder what is the location of this GP"
                 },
                 {
                     "text": "List of location"
@@ -145,7 +181,22 @@ template = {
                     "text": "list of your locations"
                 },
                 {
+                    "text": "location"
+                },
+                {
+                    "text": "tell me where is this place"
+                },
+                {
+                    "text": "the location of this hospital"
+                },
+                {
                     "text": "What are your locations?"
+                },
+                {
+                    "text": "what is the location of this trust"
+                },
+                {
+                    "text": "what is your address"
                 },
                 {
                     "text": "Where are you physically located?"
@@ -166,6 +217,9 @@ template = {
                     "text": "Where is this hospital located?"
                 },
                 {
+                    "text": "where is this place"
+                },
+                {
                     "text": "Where is this trust located?"
                 },
                 {
@@ -178,10 +232,37 @@ template = {
             "intent": "phone_number",
             "examples": [
                 {
+                    "text": "can you tell me your contact information"
+                },
+                {
+                    "text": "contact info"
+                },
+                {
+                    "text": "how to call you"
+                },
+                {
+                    "text": "how to contact this hospital"
+                },
+                {
                     "text": "I want to call this trust"
                 },
                 {
+                    "text": "list your numbers"
+                },
+                {
                     "text": "phone number"
+                },
+                {
+                    "text": "tell me your phone number"
+                },
+                {
+                    "text": "this GP's contact information"
+                },
+                {
+                    "text": "this hospital's number"
+                },
+                {
+                    "text": "what is your number"
                 },
                 {
                     "text": "what is your telephone number"
@@ -378,7 +459,7 @@ template = {
                     {
                         "values": [
                             {
-                                "text": "Hello! I can answer your questions based on the information provided on this website. How can I help you?"
+                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
                             }
                         ],
                         "response_type": "text",
@@ -505,7 +586,7 @@ template = {
                     {
                         "values": [
                             {
-                                "text": "Hello! I can answer your questions based on the information provided on this website. How can I help you?"
+                                "text": "Hello! I can answer you questions based on the information provided on this website. How can I help you?"
                             }
                         ],
                         "response_type": "text",
