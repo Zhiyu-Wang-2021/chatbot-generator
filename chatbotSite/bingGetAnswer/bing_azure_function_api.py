@@ -19,10 +19,15 @@ def get_bing_result(domain_url, question):
         "Content-Type": "application/json",
         "Ocp-Apim-Subscription-Key": "ef99b91a0209431cb66dd4d32a0b20c6"
     }
-
-    response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
-    response_data = json.loads(response.text)
-
+    
+    try:
+        response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+        response_data = json.loads(response.text)
+    except Exception as e:
+        print(e)
+        # can not read result from bing
+        return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
+    
     # # ans[ans_content, confidence_score]
     if response_data['answer'] != 'Sorry, I am having difficulties finding related information on our website to answer your question.':
         return [response_data['answer'],response_data['confidenceScore']]
