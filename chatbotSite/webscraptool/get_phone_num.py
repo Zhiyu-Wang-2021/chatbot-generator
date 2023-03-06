@@ -14,6 +14,9 @@ from ibm_watson.natural_language_understanding_v1 \
 import webscraptool.match_content as match_content
 
 def run(txt):
+    # do not accept empty txt
+    if txt == '':
+        return []
     # 1.ibm nlu extract every phrases and sentences
     apikey = 'Iig5IogwUhp2dIo1FqAUEjkka7OoC42qXbWHWucIU9oU'
     apiurl = 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/2019387f-a518-46b0-aa72-ccc03cdf67c8'

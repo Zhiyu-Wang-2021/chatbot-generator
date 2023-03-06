@@ -43,9 +43,10 @@ def get_dummy_answer(url):
 
 def get_answer(url):
 
-    filter_keywords1 = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour']
-    filter_keywords2 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact']
-    filter_keywords3 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact']
+    filter_keywords1 = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour',\
+                        'Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
+    filter_keywords2 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
+    filter_keywords3 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
     
     # timer for method to terminate scraping process when it gets stuck(take too long) due to some error
     timer = threading.Timer(1000.0, timeout_handler)
@@ -100,33 +101,52 @@ def get_answer(url):
         timer.cancel()
 
 
-
+    time.sleep(3)
+    print('\n\n\nfiltering text...\n\n\n')
 
     max_connection_attempt = 10
     connection_attempt = 0
-    filtered_phonenumber_text = ''
-    filtered_openingtime_text = ''
-    filtered_address_text = ''
-    appointment_text = ''
-
+    filtered_phonenumber_text = []
+    filtered_openingtime_text = []
+    filtered_address_text = []
+    appointment_text = []
     # try to reconnect to ibm if failed connection due to internet problem
     while(connection_attempt < max_connection_attempt):
         try:
             filtered_phonenumber_text = tool.filter_text(phonenumber_text)['filtered_text']
             filtered_openingtime_text = tool.filter_text(openingtime_text)['filtered_text']
             filtered_address_text = tool.filter_text(address_text)['filtered_text']
-            appointment_text = bingGetAnswer.get_bing_result(url, 'how to make an appointment?')
-            max_connection_attempt = 10
+            connection_attempt = 10
             break
-        except:
+        except Exception as e:
+            print(e)
             print('an error occur, try to restart scraping process...')
             time.sleep(1)
             connection_attempt = connection_attempt + 1
 
-    if not connection_attempt < max_connection_attempt:
+    connection_attempt = 0
+    # try to reconnect to ibm if failed connection due to internet problem
+    while(connection_attempt < max_connection_attempt):
+        try:
+            appointment_text = bingGetAnswer.get_bing_result(url, 'how to make an appointment?')
+            connection_attempt = 10
+            break
+        except Exception as e:
+            print(e)
+            print('an error occur, try to restart bing search process...')
+            time.sleep(1)
+            connection_attempt = connection_attempt + 1
+
+    if len(appointment_text) == 0:
         appointment_text = ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
     
-    
+    print('==================This is the answer=======================')
+    print(str({
+        'phone': filtered_phonenumber_text,
+        'openingtimepage':filtered_openingtime_text,
+        'contactpage': filtered_address_text,
+        'appointment': appointment_text
+    }))
     return {
         'phone': filtered_phonenumber_text,
         'openingtimepage':filtered_openingtime_text,

@@ -14,8 +14,8 @@ class Url_Crawler(CrawlSpider):
     
     # delay and change user agent to bypass firewall
     custom_settings = {
-        'DOWNLOAD_DELAY': 1, # 1-3 seconds of delay
-        'RANDOMIZE_DOWNLOAD_DELAY': True,
+        #'DOWNLOAD_DELAY': 1, # 1-3 seconds of delay
+        #'RANDOMIZE_DOWNLOAD_DELAY': True,
         'USER_AGENT' : 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
         }
     

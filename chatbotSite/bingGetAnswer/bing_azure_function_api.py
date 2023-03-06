@@ -23,7 +23,8 @@ def get_bing_result(domain_url, question):
     try:
         response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
         response_data = json.loads(response.text)
-    except:
+    except Exception as e:
+        print(e)
         # can not read result from bing
         return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
     
