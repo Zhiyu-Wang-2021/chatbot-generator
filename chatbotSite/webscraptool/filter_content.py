@@ -25,18 +25,19 @@ def addr(original):
 def openingtime(original):
     # ------------------------------------filter opening time-----------------------------------------------
     # Load the JSON file
-    data = original
-    print(original)
+    opening_hours_list = original
+    title_blacklist = []
+    opening_hours_filtered =['']
 
-    # Extract the opening hours from the 'time' field
-    opening_hours = [item['time'] for item in data if item['title'] == 'Opening Hours']
-
-    # Remove duplicates from the list
-    opening_hours = list(set(opening_hours))
+    for opening_hours in opening_hours_list:
+        if opening_hours['title'] not in title_blacklist:
+            title_blacklist.append(opening_hours['title'])
+            opening_hours_filtered[0] = opening_hours_filtered[0] + '\n' + opening_hours['title'] +\
+            opening_hours['time']
 
     # Put the opening_hours together
 
-    return opening_hours
+    return opening_hours_filtered
 
 def phonenumber(original):
     # ------------------------------------filter phonenum-----------------------------------------------

@@ -48,8 +48,11 @@ class Tool(Abstract_Tool):
 
     def filter_url(self, keywords, affixs, category) -> list:
         result = []
-
+        # add homepage
+        result.append({'title':'', 'url':'http://' + self.mainsite, 'category':category, 'keyword':''})
+        
         # check if keyword is in title
+        
         for url in self.url_dict:
             for keyword in keywords:
                 if url['title'] is not None and keyword in url['title']:
@@ -93,21 +96,21 @@ class Tool(Abstract_Tool):
     def filter_text(self, content_dict) -> dict:
         categories = {'':0, 'openingtime':1,'address':2,'phonenumber':3}
         i = categories.get(content_dict['category'])
-        result = {}
+        result = []
 
         if i == 0:
             result = ''
 
         if i == 1:
-            result = get_openingtime.run(content_dict['text'])
-            result = filter_content.openingtime(result)
+            temp = get_openingtime.run(content_dict['text'])
+            result = filter_content.openingtime(temp)
 
         if i == 2:
-            result = get_addr.run(content_dict['text'])
-            result = filter_content.addr(result)
+            temp = get_addr.run(content_dict['text'])
+            result = filter_content.addr(temp)
 
         if i == 3:
-            result = get_phone_num.run(content_dict['text'])
-            result = filter_content.phonenumber(result)
+            temp = get_phone_num.run(content_dict['text'])
+            result = filter_content.phonenumber(temp)
 
         return {'category': content_dict['category'], 'filtered_text': result}
