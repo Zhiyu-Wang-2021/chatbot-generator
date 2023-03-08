@@ -24,6 +24,9 @@ def timeout_handler():
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
     time.sleep(2)
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    # send to shutdown(for linux)
+    os.kill(os.getpid(), signal.SIGINT)
+    os.kill(os.getpid(), signal.SIGINT)
 
     
 
@@ -45,7 +48,7 @@ def get_answer(url):
 
     filter_keywords1 = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour',\
                         'Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
-    filter_keywords2 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
+    filter_keywords2 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact','Contact us : University College London Hospitals NHS Foundation Trust']
     filter_keywords3 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
     
     # timer for method to terminate scraping process when it gets stuck(take too long) due to some error
@@ -147,6 +150,8 @@ def get_answer(url):
         'contactpage': filtered_address_text,
         'appointment': appointment_text
     }))
+    print('================================this is the filtered url')
+    print(str(openingtime_url))
     return {
         'phone': filtered_phonenumber_text,
         'openingtimepage':filtered_openingtime_text,

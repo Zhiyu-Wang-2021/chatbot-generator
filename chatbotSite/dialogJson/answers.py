@@ -24,8 +24,10 @@ class Answers:
             return "Sorry, I am not sure about this question based on the information on our website."
 
     def get_hours_info(self):
-        if len(self.operation_hour) > 0 and type(self.operation_hour)!=str:
+        if len(self.operation_hour) > 0 and type(self.operation_hour)!=str and self.operation_hour[0] != '':
             return self.operation_hour[0]
+        elif self.operation_hour[0] == '':
+            return "Sorry, I am not sure about this question based on the information on our website."            
         else:
             return "Sorry, I am not sure about this question based on the information on our website."
 

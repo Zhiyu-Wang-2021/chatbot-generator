@@ -13,13 +13,22 @@ import webscraptool.get_openingtime as get_openingtime
 import webscraptool.get_phone_num as get_phone_num
 
 import webscraptool.filter_content as filter_content
-
+import os,signal,time
 
 class Tool(Abstract_Tool):
     def __init__(self) -> None:
         super().__init__()
         self.mainsite = ''
         self.url_dict = []
+
+    def timeout_handler():
+        # send ctrl + c to prompt to terminate web scraping process
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+        time.sleep(2)
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+        # send to shutdown(for linux)
+        os.kill(os.getpid(), signal.SIGINT)
+        os.kill(os.getpid(), signal.SIGINT)
 
     def setup(self, link) -> None:
         self.mainsite = link

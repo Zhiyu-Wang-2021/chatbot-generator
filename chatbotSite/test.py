@@ -1,14 +1,14 @@
 import webscraptool.get_answer_dict as t
 from dialogJson.answers import Answers
 
-res = {'answers':t.get_answer('www.uclh.nhs.uk')}
+res = {'answers':t.get_answer('www.whitelodgemedicalpractice.nhs.uk')}
 ans = Answers(res)
 print('\n\n\n---------------------------result\n\n\n')
 print(res)
-print('\n\n\n'+ans.get_appointment_info()+'\n\n\n')
-print('\n\n\n'+ans.get_hours_info()+'\n\n\n')
-print('\n\n\n'+ans.get_loc_info()+'\n\n\n')
-print('\n\n\n'+ans.get_phone_info()+'\n\n\n')
+print('\n\nappointment\n'+ans.get_appointment_info()+'\n\n\n')
+print('\n\ntime\n'+ans.get_hours_info()+'\n\n\n')
+print('\n\nloc\n'+ans.get_loc_info()+'\n\n\n')
+print('\n\nphone\n'+ans.get_phone_info()+'\n\n\n')
 
 # www.camdengp.co.uk（correct address should be no 'www'）
 # run on the server:err500，locally no problem

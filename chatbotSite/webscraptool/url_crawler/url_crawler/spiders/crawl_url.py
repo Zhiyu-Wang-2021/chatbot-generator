@@ -24,12 +24,15 @@ class Url_Crawler(CrawlSpider):
         super(Url_Crawler, self).__init__(*args, **kwargs)
         self.start_urls = [f'http://{url}/']
         self.allowed_domains = [f'{url}']
-
+        self.links = []
+#why cannot get uclh contactpage???
     def parse_item(self, response):
         if 'depth' in response.meta: depth = response.meta['depth']
         # only follow 4 layers of link and exit so as to avoid crawling to much links
-        if depth > 4: raise scrapy.exceptions.CloseSpider(reason='maximum depth reached!')
+        # if depth > 4: raise scrapy.exceptions.CloseSpider(reason='maximum depth reached!')
+        if len(self.links) > 100: raise scrapy.exceptions.CloseSpider(reason='maximum length reached!')
         item = {}
         item['title'] = response.css('title::text').get()
         item['url'] = response.request.url
+        self.links.append(item)
         yield item
