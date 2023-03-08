@@ -26,8 +26,10 @@ class Tool(Abstract_Tool):
         os.kill(os.getpid(), signal.CTRL_C_EVENT)
         time.sleep(2)
         os.kill(os.getpid(), signal.CTRL_C_EVENT)
+        time.sleep(2)
         # send to shutdown(for linux)
         os.kill(os.getpid(), signal.SIGINT)
+        time.sleep(2)
         os.kill(os.getpid(), signal.SIGINT)
 
     def setup(self, link) -> None:

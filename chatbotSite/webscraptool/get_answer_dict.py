@@ -24,8 +24,10 @@ def timeout_handler():
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
     time.sleep(2)
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    time.sleep(2)
     # send to shutdown(for linux)
     os.kill(os.getpid(), signal.SIGINT)
+    time.sleep(2)
     os.kill(os.getpid(), signal.SIGINT)
 
     
@@ -52,7 +54,7 @@ def get_answer(url):
     filter_keywords3 = ['Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
     
     # timer for method to terminate scraping process when it gets stuck(take too long) due to some error
-    timer = threading.Timer(1000.0, timeout_handler)
+    timer = threading.Timer(100.0, timeout_handler)
     timer.start()
 
     openingtime_url = []
