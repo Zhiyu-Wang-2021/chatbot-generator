@@ -37,6 +37,15 @@ def match_phonenumber_it(text):
     # return an iterable object of match result
     return phonenumbers.PhoneNumberMatcher(text, "GB")
 
+def match_phonenumber_content(text):
+    # mathch the first phone number appears in a given text
+    a = match_phonenumber_it(text)
+    for m in match_phonenumber_it(text):
+        if m.start == 0 or m.start > 0:
+            return text[m.start:m.end]
+        else:
+            return None
+
 def match_time_it(text):
     # match time in sentences, if exists return an iterable object
     match=re.finditer(r'(\d+:\d{2})', text)
@@ -56,3 +65,5 @@ def match_time(text):
         return True
     else:
         return False    
+
+

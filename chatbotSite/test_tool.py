@@ -1,24 +1,12 @@
-def filter_text(content_dict) -> dict:
-        categories = {'':0, 'openingtime':1,'address':2,'phonenumber':3}
-        i = categories.get(content_dict['category'])
-        result = {}
+from webscraptool.tool import Tool
+from webscraptool.get_phone_num import run
+tool = Tool()
+a = [{'title': '', 'url': 'https://www.gosh.nhs.uk', 'keyword': ''}, {'url':'https://www.gosh.nhs.uk/about-us/contact-us/'}]
+t = tool.scrape_text(a)
+#filtered_address_text = tool.filter_text(t,category='address')['filtered_text']
+#print(filtered_address_text)
+print(len(t['text']))
+print('\n\n\n')
+a = run(str(t['text'][1]['text']))
+print(a)
 
-        if i == 0:
-            result = ''
-
-        if i == 1:
-            result = 1
-            result = 1
-
-        if i == 2:
-            result = 2
-            result = 2
-
-        if i == 3:
-            result = 3
-            result = 3
-
-        return {'category': content_dict['category'], 'filtered_text': result}
-
-a = {'category': 'openingtime', 'text':'fucktou'}
-print(filter_text(a))

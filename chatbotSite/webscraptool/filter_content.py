@@ -63,12 +63,24 @@ def openingtime(original):
 def phonenumber(original):
     # ------------------------------------filter phonenum-----------------------------------------------
     phonenum_list = original
-    filter_phonenum = []
+    filter_phonenum = [] # phone number and related text already get
+    blacklist_phonenum = [] # phone number(only) already get 
 
     for phone_num in phonenum_list:
-        if phone_num['num'] not in filter_phonenum:
+        cur_phonenum = match_content.match_phonenumber_content(phone_num['num'])
+        success_flag = 1
+
+        for blacklist in blacklist_phonenum:
+            print(blacklist)
+            print(cur_phonenum)
+            # not the same e.g.020 7405 9200
+            # not the same substring e.g. 020 7405 9200,+44 (0)20 7405 9200
+            if (cur_phonenum.find(blacklist) != -1 or blacklist.find(cur_phonenum) != -1)\
+                or (cur_phonenum.find(blacklist[1:]) != -1 or blacklist.find(cur_phonenum[1:]) != -1):
+                success_flag = 0
+
+        if success_flag == 1:
             filter_phonenum.append(phone_num['num'])
+            blacklist_phonenum.append(cur_phonenum)
 
-        
     return filter_phonenum
-

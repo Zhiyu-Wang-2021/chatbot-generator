@@ -5,15 +5,25 @@ from scrapy.signalmanager import dispatcher
 from webscraptool.url_crawler.url_crawler.spiders.crawl_url import Url_Crawler
 from webscraptool.get_text.get_text.spiders.get_text import Scrape_Text
 from scrapy.crawler import CrawlerProcess
-from scrapy import crawler
-from scrapy.exceptions import CloseSpider
 
 import webscraptool.get_addr as get_addr
 import webscraptool.get_openingtime as get_openingtime
 import webscraptool.get_phone_num as get_phone_num
 
 import webscraptool.filter_content as filter_content
-import os,signal,time
+import webscraptool.get_valid_url as get_vaild_url
+import os,signal,time,threading
+
+def timeout_handler():
+    # send ctrl + c to prompt to terminate web scraping process
+    #os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    #time.sleep(2)
+    #os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    time.sleep(2)
+    # send to shutdown(for linux)
+    os.kill(os.getpid(), signal.SIGINT)
+    time.sleep(2)
+    os.kill(os.getpid(), signal.SIGINT)
 
 class Tool(Abstract_Tool):
     def __init__(self) -> None:
@@ -21,18 +31,11 @@ class Tool(Abstract_Tool):
         self.mainsite = ''
         self.url_dict = []
 
-    def timeout_handler():
-        # send ctrl + c to prompt to terminate web scraping process
-        os.kill(os.getpid(), signal.CTRL_C_EVENT)
-        time.sleep(2)
-        os.kill(os.getpid(), signal.CTRL_C_EVENT)
-        time.sleep(2)
-        # send to shutdown(for linux)
-        os.kill(os.getpid(), signal.SIGINT)
-        time.sleep(2)
-        os.kill(os.getpid(), signal.SIGINT)
-
     def setup(self, link) -> None:
+        # timer for method to terminate scraping process when it gets stuck(take too long) due to some error
+        timer = threading.Timer(1000.0, timeout_handler)
+        timer.start()
+
         self.mainsite = link
         results = []
 
@@ -52,23 +55,54 @@ class Tool(Abstract_Tool):
         default.install()
         # the script will block here until the crawling is finished
 
+        # if time is not out we need to cancel the timer
+        timer.cancel()
         self.url_dict = results
            
-         
+    def crawl_url_by_dictionary(self, dict_name):
+        time.sleep(1)
+        page_dictionary1 = {'general_info':['contact',
+                            'contact-us/',
+                            'our-services/our-hospitals/university-college-hospital',
+                            'about-us/contact-us/',
+                            'practice-information/contact-us/',
+                            'about-us/contact/location/',
+                            'about-us/contact/contact-telephone-numbers/',
+                            'contact/location/',
+                            'contact/contact-telephone-numbers/',
+                            'contact1.aspx',
+                            'how-to-find-us/',
+                            'find-us',
+                            'page1.aspx?p=3&pr=F83624&t=1&high=opening',
+                            'contact-us/contact-details/',
+                            'appointments/opening-times/',
+                            'appointments/opening-hours/',
+                            'appointments/',
+                            'opening-times/',
+                            'about-us/opening-hours/',
+                            'opening-hours',
+                            'practice-information/opening-hours/'
+                    ]}
+        # check if input dict_name is valid
+        if not len(page_dictionary1.get(dict_name)) > 0:
+            return []
+        elif not type(dict_name) == str:
+            return []
+        return get_vaild_url.run(self.mainsite, page_dictionary1[dict_name])
     
 
-    def filter_url(self, keywords, affixs, category) -> list:
+    def filter_url(self, keywords) -> list:
         result = []
         # add homepage
-        result.append({'title':'', 'url':'https://' + self.mainsite, 'category':category, 'keyword':''})
+        result.append({'title':'', 'url':'https://' + self.mainsite, 'keyword':''})
         
         # check if keyword is in title
         
         for url in self.url_dict:
             for keyword in keywords:
                 if url['title'] is not None and keyword in url['title']:
-                    result.append({'title':url['title'], 'url':url['url'], 'category':category, 'keyword':keyword})
-
+                    result.append({'title':url['title'], 'url':url['url'], 'keyword':keyword})
+        
         return result
     
     def scrape_text(self, filtered_urls) -> dict:
@@ -78,9 +112,13 @@ class Tool(Abstract_Tool):
         # I don't know why but only list can be used here.
         # If you use string you will get empty result...
         def crawler_results(signal, sender, item, response, spider):
-            results.append(item['text'])
+            results.append({'text':item['text']})
 
         for url in filtered_urls:
+            # give 45 seconds for each url
+            timer = threading.Timer(45.0, timeout_handler)
+            timer.start()
+
             dispatcher.connect(crawler_results, signal=signals.item_scraped)
             # remove 'http://' or scrapy can not recognized the link
             url_replaced = url['url'].replace('http://', '')
@@ -94,34 +132,66 @@ class Tool(Abstract_Tool):
             from twisted.internet import reactor
             from twisted.internet import default
             default.install()   
+            timer.cancel()
         
-        r = ''
-        for result in results:
-            r = r + result
-        if len(filtered_urls) != 0:
-            return {'category':filtered_urls[0]['category'], 'text':r}
 
+
+        if len(filtered_urls) != 0:
+            return {'text':results}
+        
         # return null if no url crawled
-        return {'category':'', 'text':r}
+        return {'text':results}
     
-    def filter_text(self, content_dict) -> dict:
+    def filter_text(self, content_dict, category) -> dict:
         categories = {'':0, 'openingtime':1,'address':2,'phonenumber':3}
-        i = categories.get(content_dict['category'])
+        i = categories.get(category)
         result = []
 
         if i == 0:
-            result = ''
+            pass
 
+        else:
+            for j in content_dict['text']:
+                # try to reconnect to ibm if failed connection due to internet problem
+                max_connection_attempt = 3
+                connection_attempt = 0
+
+                while(connection_attempt < max_connection_attempt):
+                    time.sleep(1)
+                    try:
+                        temp = []
+
+                        if i == 1:
+                            temp = get_openingtime.run(j['text'])
+                            print(temp)
+                            if temp is not None:
+                                result = result + temp
+
+                        if i == 2:
+                            temp = get_addr.run(j['text'])
+                            print(temp)
+                            if temp is not None:
+                                result = result + temp
+
+                        if i == 3:
+                            temp = get_phone_num.run(j['text'])
+                            print(temp)
+                            if temp is not None:
+                                result = result + temp
+
+                        # end the while loop if no error
+                        connection_attempt = max_connection_attempt
+
+                    except Exception as e:
+                        connection_attempt += 1
+                        print(e)
+        print('-------------------no-filtered-result----------------')
+        print(result)
         if i == 1:
-            temp = get_openingtime.run(content_dict['text'])
-            result = filter_content.openingtime(temp)
-
-        if i == 2:
-            temp = get_addr.run(content_dict['text'])
-            result = filter_content.addr(temp)
-
-        if i == 3:
-            temp = get_phone_num.run(content_dict['text'])
-            result = filter_content.phonenumber(temp)
-
-        return {'category': content_dict['category'], 'filtered_text': result}
+            result = filter_content.openingtime(result)
+        elif i == 2:
+            result = filter_content.addr(result)
+        elif i == 3:
+            result = filter_content.phonenumber(result)
+                
+        return {'filtered_text': result}

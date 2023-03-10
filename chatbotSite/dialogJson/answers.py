@@ -12,13 +12,14 @@ class Answers:
         self.appointment = data["answers"]["appointment"]
 
     def get_appointment_info(self):
-        return self.appointment[0]
+        if len(self.appointment) > 0:
+            return self.appointment[0]
 
     def get_loc_info(self):
         if len(self.location) > 0 and type(self.location)!=str:
-            combined_loc_info = ""
-            for info in self.location:
-                combined_loc_info = combined_loc_info + info["address"] + info["postcode"] + '\n'
+            #combined_loc_info = ""
+            #for info in self.location:
+            #    combined_loc_info = combined_loc_info + info["address"] + info["postcode"] + '\n'
             return self.location[0]["address"] + self.location[0]["postcode"]
         else:
             return "Sorry, I am not sure about this question based on the information on our website."
@@ -26,7 +27,7 @@ class Answers:
     def get_hours_info(self):
         if len(self.operation_hour) > 0 and type(self.operation_hour)!=str and self.operation_hour[0] != '':
             return self.operation_hour[0]
-        elif self.operation_hour[0] == '':
+        elif len(self.operation_hour) > 0 and self.operation_hour[0] == '':
             return "Sorry, I am not sure about this question based on the information on our website."            
         else:
             return "Sorry, I am not sure about this question based on the information on our website."

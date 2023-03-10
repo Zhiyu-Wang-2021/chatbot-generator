@@ -4,12 +4,11 @@ import json
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.language.questionanswering import QuestionAnsweringClient
 from azure.ai.language.questionanswering import models as qna
+import env
 
 def get_bing_result(domain_url, question):
-    url = "https://bingaccessforwatson.azurewebsites.net/api/useQnA2ImproveAnswer"
-
-    querystring = {"code":"41mEZaj2kjJphYWmK6eHPFzQwQHLiVyW61QpEvrpGUcbAzFuAwDC3w=="}
-
+    url = env.bingapi_endpoint
+    querystring = env.bingapi_subscrption_key
 
     payload = {
         "q": question,
@@ -17,16 +16,28 @@ def get_bing_result(domain_url, question):
     }
     headers = {
         "Content-Type": "application/json",
-        "Ocp-Apim-Subscription-Key": "ef99b91a0209431cb66dd4d32a0b20c6"
+        "Ocp-Apim-Subscription-Key": "ef99b91a0209431cb66dd4d32a0b20c6",
     }
     
-    try:
-        response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
-        response_data = json.loads(response.text)
-    except Exception as e:
-        print(e)
-        # can not read result from bing
-        return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
+    # try to reconnect to bing if failed connection due to internet problem
+    connection_attempt = 0
+    max_connection_attempt = 5
+
+    while(connection_attempt < max_connection_attempt):
+        try:
+            response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+            response_data = json.loads(response.text)
+            connection_attempt = 5
+            break
+        except Exception as e:
+            print(e)
+            print('something went wrong with bing api,try to resend request...')
+            connection_attempt += 1
+            if connection_attempt == 5:
+                print('something went wrong with bing api,maximum retry reached!')
+                return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
+            # can not read result from bing
+            
     
     # # ans[ans_content, confidence_score]
     if response_data['answer'] != 'Sorry, I am having difficulties finding related information on our website to answer your question.':
