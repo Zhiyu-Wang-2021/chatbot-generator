@@ -7,8 +7,7 @@ from azure.ai.language.questionanswering import models as qna
 import env
 
 def get_bing_result(domain_url, question):
-    url = env.bingapi_endpoint
-    querystring = env.bingapi_subscrption_key
+    url = env.BING_AZURE_FUNC_URL
 
     payload = {
         "q": question,
@@ -16,7 +15,7 @@ def get_bing_result(domain_url, question):
     }
     headers = {
         "Content-Type": "application/json",
-        "Ocp-Apim-Subscription-Key": "ef99b91a0209431cb66dd4d32a0b20c6",
+        "Ocp-Apim-Subscription-Key": env.BING_API_KEY,
     }
     
     # try to reconnect to bing if failed connection due to internet problem
@@ -25,7 +24,7 @@ def get_bing_result(domain_url, question):
 
     while(connection_attempt < max_connection_attempt):
         try:
-            response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+            response = requests.request("POST", url, json=payload, headers=headers)
             response_data = json.loads(response.text)
             connection_attempt = 5
             break

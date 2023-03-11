@@ -7,12 +7,12 @@ from dialogJson.dialog_json import DialogJson
 from dialogJson.template_json import template as dialog_json_template
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
-from env import password
+from env import MONGODB_URL
 from webscraptool.get_answer_dict import get_dummy_answer, get_answer
 
 USE_DUMMY_DATA = False
 
-client = MongoClient("mongodb+srv://csp_chatbot_db:" + password + "@csp-chatbot.jwqkx3s.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient(MONGODB_URL)
 dialog_db = client["dialog_json"]
 dialog_collection = dialog_db['dialog_json']
 website_collection = dialog_db["websites_to_dialogs"]

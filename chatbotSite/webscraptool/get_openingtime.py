@@ -14,8 +14,8 @@ import env
 def run(txt):
 
     # 1.ibm nlu extract every phrases and sentences
-    apikey = env.ibm_api_key
-    apiurl = env.ibm_api_endpoint
+    apikey = env.IBM_NLU_API_KEY
+    apiurl = env.IBM_NLU_URL
     authenticator = IAMAuthenticator(apikey)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         version='2022-04-07',
