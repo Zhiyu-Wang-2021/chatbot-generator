@@ -1,22 +1,9 @@
-
 import time
 import bingGetAnswer.bing_azure_function_api as bingGetAnswer
 
-
-# www.gosh.nhs.uk
-# www.whitelodgemedicalpractice.nhs.uk - ok
-
-# www.therossingtonpractice.nhs.uk
-# www.oakleymedicalpractice.nhs.uk - ok
-
-# several clinic
-# www.clackmannanandkincardine.scot.nhs.uk
-# www.theweardalepractice.nhs.uk
 from webscraptool.tool import Tool
 import time
-
     
-
 
 def get_dummy_answer(url):
     website_url = url
@@ -28,7 +15,6 @@ def get_dummy_answer(url):
         'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}],
         'appointment': ["appointment dummy data", 0]
     }
-
 
 
 def get_answer(url):

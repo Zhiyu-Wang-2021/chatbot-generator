@@ -30,8 +30,6 @@ def run(txt):
 
     natural_language_understanding.set_service_url(apiurl)
 
-
-
     # only get sentences
     response = natural_language_understanding.analyze(
         text=txt,
@@ -44,33 +42,23 @@ def run(txt):
     # 2.match and check if phone number exists in text then try to get one sentences/word before
     dict = response
     d_pre = {} # contain previous iterated dict 
-    data_extracted = ''
     cur_index = 0
     phone_nums_dict = []
 
     for d in dict['syntax']['sentences']:
         # only phone number and related content filter out postcode
         if match_content.match_phonenumber(d['text']): 
-            # remove whitespace for api to recognize
-            # text_no_whitespace = str(d_pre['text']).replace(' ','')
-
-            # if validation.is_valid_postcode(text_no_whitespace):
             if match_content.match_postcode(d_pre['text']):
                 phone_nums_dict.append({
                     'title':'',
                     'num':d['text'],
             })
-               # data_extracted = data_extracted + d['text'] + '\n'
             else:
                 phone_nums_dict.append({
                     'title': d_pre['text'],
                     'num':d['text'],
                 })
-               # data_extracted = data_extracted + d_pre['text'] + '\n' + d['text'] + '\n'
         d_pre = d
         cur_index = cur_index + 1
-    # f.write('\n')
-    # f.write(data_extracted)
-    # if dict not empty write to json
     return phone_nums_dict
 

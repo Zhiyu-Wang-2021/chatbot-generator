@@ -1,5 +1,3 @@
-# command:
-# scrapy crawl crawl_url -a url=www.gosh.nhs.uk
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
@@ -25,12 +23,12 @@ class Url_Crawler(CrawlSpider):
         self.start_urls = [f'http://{url}/']
         self.allowed_domains = [f'{url}']
         self.links = []
-#why cannot get uclh contactpage???
+
+    # Crawling URL
     def parse_item(self, response):
         if 'depth' in response.meta: depth = response.meta['depth']
         # only follow 4 layers of link and exit so as to avoid crawling to much links
         if depth > 4: raise scrapy.exceptions.CloseSpider(reason='maximum depth reached!')
-        # if len(self.links) > 100: raise scrapy.exceptions.CloseSpider(reason='maximum length reached!')
         item = {}
         item['title'] = response.css('title::text').get()
         item['url'] = response.request.url

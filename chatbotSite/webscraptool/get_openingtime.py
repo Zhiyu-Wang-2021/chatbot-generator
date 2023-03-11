@@ -1,6 +1,6 @@
-# 1.ibm nlu extract every phrases and sentences
-# 2.find the location where a time(e.g.18:00) is given then match one word/sentence before the time
-# 3.read before the first time period until keyword is detected as there is always a title on the front
+# 1. ibm nlu extract every phrases and sentences
+# 2. find the location where a time(e.g.18:00) is given then match one word/sentence before the time
+# 3. read before the first time period until keyword is detected as there is always a title on the front
 # this part will handle the problem of multiple surgery and filter out Consultation Consulting
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -96,8 +96,6 @@ def run(txt):
 
 
     # 3.2 read until keyword is detected as there is always a title on the front and filter out the unwilling content
-    # keywords:['Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
-    # disallow: ['Consultation', 'Consulting', 'Dr', 'Nurse', 'ANP', 'Assistant']
     keyword = ['Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
     disallow = ['Consultation', 'Consulting', 'Dr', 'Nurse', 'ANP', 'Assistant']
 
@@ -164,14 +162,12 @@ def run(txt):
         # also do not do title read when the time period is given in a sentence
         # only one is in the list but really long which means it is a sentence
         if len(sequence_pos) == 1 and len(time_sequence)>45:
-            # f.write('\n' + time_sequence)
             openingtime_dict.append({
                     'title':'',
                     'time':time_sequence,
             })
             print('\n' + time_sequence)
         else:
-            # f.write(title + '\n' + time_sequence)
             openingtime_dict.append({
                     'title':title,
                     'time':time_sequence,

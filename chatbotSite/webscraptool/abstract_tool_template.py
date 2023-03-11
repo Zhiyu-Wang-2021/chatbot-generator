@@ -13,7 +13,7 @@ class Abstract_Tool(ABC):
         # crawl all the url -> store all url and their title in a dict
         # self.url_dict = [{title:title, url:url},...]
         # store main site in self.main_site
-        # link - format of input:www.uclh.nhs.uk
+        # link - format of input:www.{nhs_trust_name}.nhs.uk
         # (just do not include 'http:// /')
         pass
 
@@ -32,8 +32,6 @@ class Abstract_Tool(ABC):
         # [{'title','link','keyword'},{},....]
         # all keywords should be as follow
         # ['keyword1', 'keyword2',.....]
-
-
         pass
 
     def scrape_text(self, filtered_url) -> dict:

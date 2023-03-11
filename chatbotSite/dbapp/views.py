@@ -22,13 +22,6 @@ website_collection = dialog_db["websites_to_dialogs"]
 def generate_json(request):  # POST - provide url and generate
     data = json.loads(request.body)
     print(data)  # only url and ref
-    # use the webscraptool to get data from url
-    # {
-    #     'phone': ['020 8363 4156'],
-    #     'openingtimepage':
-    #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
-    #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
-    # }
     if USE_DUMMY_DATA:
         data["answers"] = get_dummy_answer(data["url"])
     else:
@@ -49,13 +42,6 @@ def generate_json(request):  # POST - provide url and generate
 def generate_json_from_existing(request):  # POST - provide url and generate
     data = json.loads(request.body)
     print(data)  # only url and ref
-    # use the webscraptool to get data from url
-    # {
-    #     'phone': ['020 8363 4156'],
-    #     'openingtimepage':
-    #         ['Monday\n08:00-18:30\nTuesday\n08:00-18:30\nWednesday\n08:00-18:30\nThursday\n08:00-18:30\nFriday\n08:00-18:30\n'],
-    #     'contactpage': [{'postcode': 'EN2 6NL', 'address': 'Enfield\n105-109 Chase Side\n', 'contact': ''}]
-    # }
     if USE_DUMMY_DATA:
         data["answers"] = get_dummy_answer(data["url"])
     else:

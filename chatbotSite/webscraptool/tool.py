@@ -15,10 +15,13 @@ import webscraptool.get_valid_url as get_vaild_url
 import os,signal,time,threading
 
 def timeout_handler():
+    # For Windows
     # send ctrl + c to prompt to terminate web scraping process
     #os.kill(os.getpid(), signal.CTRL_C_EVENT)
     #time.sleep(2)
     #os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    
+    # For Linux or MacOS
     time.sleep(2)
     # send to shutdown(for linux)
     os.kill(os.getpid(), signal.SIGINT)
@@ -106,11 +109,8 @@ class Tool(Abstract_Tool):
         return result
     
     def scrape_text(self, filtered_urls) -> dict:
-
         results = []
 
-        # I don't know why but only list can be used here.
-        # If you use string you will get empty result...
         def crawler_results(signal, sender, item, response, spider):
             results.append({'text':item['text']})
 
@@ -133,7 +133,6 @@ class Tool(Abstract_Tool):
             from twisted.internet import default
             default.install()   
             timer.cancel()
-        
 
 
         if len(filtered_urls) != 0:

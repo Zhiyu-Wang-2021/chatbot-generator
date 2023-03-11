@@ -1,8 +1,8 @@
 # get address workflow:
 # 1.get the position of postcode in the content.txt
-# 2.1try to get address before or after postcode as the address is always next to postcode
-# 2.2postcode is always at the end of the address and the first line will be street/road/side
-# 2.3read until keyword is detected
+# 2.1 try to get address before or after postcode as the address is always next to postcode
+# 2.2 postcode is always at the end of the address and the first line will be street/road/side
+# 2.3 read until keyword is detected
 # keyword:
 # street/road/side/Court/Place/Avenue/Lane/Common/Hall/Hill/Hoo/Gardens/College/Drive/Ward/Close/Centre/Oval/Grove
 # practice/Surgery/Medical/Hospital/Heath
@@ -47,12 +47,6 @@ def run(txt):
 
     for d in sentences_dict['syntax']['sentences']:
         postcode =  match_content.match_postcode(str(d['text']))
-        text_no_whitespace = str(d['text']).replace(' ', '')
-
-    #    if validation.is_valid_postcode(text_no_whitespace):
-    #        start_pos.append(cur_index)
-    #    elif postcode and validation.is_valid_postcode(postcode.replace(' ', '')):
-    #        start_pos.append(cur_index)
         if postcode:
             start_pos.append(cur_index)        
 
@@ -65,7 +59,7 @@ def run(txt):
     # practice/Surgery/Medical/Hospital/Health
 
     # check if keywords exists
-    # True:in/False:not in
+    # True:in / False:not in
     def check_keywords(text):    
         keywords = [
                     'Street', 'Road', 'Side', 'Court', 'Place', 
@@ -140,8 +134,3 @@ def run(txt):
 
 
         return addr_dict
-#    for d in addr_dict:
-#        f.write(d['address'] + d['postcode'] + '\n' + d['contact'])
-#        print(d['address'],d['postcode'],'\n',d['contact'])
-#        print('------------------------\n')
-
