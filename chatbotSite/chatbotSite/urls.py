@@ -17,7 +17,6 @@ from django.urls import path
 from dbapp import views
 
 urlpatterns = [
-    path('generate_json/', views.generate_json),
     path('generate_json_e/', views.generate_json_from_existing),
     path('get_json/', views.get_json),
     path('del_json/', views.del_json),
