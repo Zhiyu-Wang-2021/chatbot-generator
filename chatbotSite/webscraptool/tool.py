@@ -63,7 +63,6 @@ class Tool(Abstract_Tool):
         self.url_dict = results
            
     def crawl_url_by_dictionary(self, dict_name):
-        time.sleep(1)
         page_dictionary1 = {'general_info':['contact',
                             'contact-us/',
                             'our-services/our-hospitals/university-college-hospital',
@@ -76,11 +75,11 @@ class Tool(Abstract_Tool):
                             'contact1.aspx',
                             'how-to-find-us/',
                             'find-us',
+                            'contact-us/?practice-selected=practice-2',
+                            'contact-us/?practice-selected=practice-1',
+                            'contact-us/?practice-selected=practice-3',
                             'page1.aspx?p=3&pr=F83624&t=1&high=opening',
                             'contact-us/contact-details/',
-                            'appointments/opening-times/',
-                            'appointments/opening-hours/',
-                            'appointments/',
                             'opening-times/',
                             'about-us/opening-hours/',
                             'opening-hours',
@@ -94,17 +93,25 @@ class Tool(Abstract_Tool):
         return get_vaild_url.run(self.mainsite, page_dictionary1[dict_name])
     
 
-    def filter_url(self, keywords) -> list:
+    def filter_url(self, keywords, blacklist_keywords) -> list:
         result = []
         # add homepage
         result.append({'title':'', 'url':'https://' + self.mainsite, 'keyword':''})
         
         # check if keyword is in title
-        
         for url in self.url_dict:
             for keyword in keywords:
+
                 if url['title'] is not None and keyword in url['title']:
-                    result.append({'title':url['title'], 'url':url['url'], 'keyword':keyword})
+                    # check black list
+                    blacklist_flag = 0
+
+                    for blacklist_keyword in blacklist_keywords:
+
+                        if blacklist_keyword in url['title']:  
+                            blacklist_flag = 1     
+                    if blacklist_flag == 0:            
+                        result.append({'title':url['title'], 'url':url['url'], 'keyword':keyword})
         
         return result
     
@@ -114,16 +121,14 @@ class Tool(Abstract_Tool):
         def crawler_results(signal, sender, item, response, spider):
             results.append({'text':item['text']})
 
-        for url in filtered_urls:
+        for link in filtered_urls:
             # give 45 seconds for each url
             timer = threading.Timer(45.0, timeout_handler)
             timer.start()
 
             dispatcher.connect(crawler_results, signal=signals.item_scraped)
-            # remove 'http://' or scrapy can not recognized the link
-            url_replaced = url['url'].replace('http://', '')
             process = CrawlerProcess(get_project_settings())
-            process.crawl(Scrape_Text, url=url_replaced)
+            process.crawl(Scrape_Text, url=link['url'])
             process.start()
 
             # the script will fixed twisted error

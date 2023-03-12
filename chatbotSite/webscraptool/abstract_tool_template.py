@@ -14,7 +14,7 @@ class Abstract_Tool(ABC):
         # self.url_dict = [{title:title, url:url},...]
         # store main site in self.main_site
         # link - format of input:www.{nhs_trust_name}.nhs.uk
-        # (just do not include 'http:// /')
+        # (just do not include 'https:// /')
         pass
 
     def crawl_url_by_dictionary(self, dict_name):
@@ -24,7 +24,7 @@ class Abstract_Tool(ABC):
         # select which dict to use by dict_name
         pass
 
-    def filter_url(self, keywords) -> list:
+    def filter_url(self, keywords, blacklist_keywords) -> list:
         # filter out url with specific keyword in title or specific affix
         # store filtered url in a dict 'self.filtered_url'
         # e.g. if we need to get address the category should be filled in as 'address'
@@ -37,7 +37,7 @@ class Abstract_Tool(ABC):
     def scrape_text(self, filtered_url) -> dict:
         # return empty if url is not filtered
         # scrape text from 'self.filtered_url' store as dictionary(content_dict)
-        # return content_dict = {'text':'text from page 1'},{'text':'text from page 2'},...
+        # return content_dict = [{'text':'text from page 1'},{'text':'text from page 2'},...]
         pass
 
     def filter_text(self, content_dict, category) -> dict:

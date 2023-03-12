@@ -1,4 +1,8 @@
 import webscraptool.match_content as match_content
+from difflib import SequenceMatcher
+
+# filter duplicates
+
 def check_keyword_openinghour(title):
     keywords = ['Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
     
@@ -15,22 +19,52 @@ def addr(original):
     # -----------------------------filter addr by postcode--------------------------------------------
     # different addr has different postcode so filter addr by its postcode
     addr_list = original
-    postcodes = []
+    blacklists = []
+    # e.g.blacklist=[{'postcode':'N1 9JP','address':'200 Pentonville Road'},{...},...]
     addr_filtered = []
 
     for addr in addr_list:
         postcode = match_content.match_postcode(addr['postcode'])
+        # should not contains https:// as some times it will match something in url
+        # e.g.https://feedback.camdenccg.nhs.uk/north-central-london/3be45ae8/
+        # 3be45ae8 is matched as postcode
+        # should not be a relocating message/referral page
+        if postcode != '' and 'https://' not in addr['address']\
+            and 'relocating' not in addr['address'] and 'relocation' not in addr['address']\
+            and 'Relocation' not in addr['address'] and 'Referral' not in addr['address']:
+            
+            # first iteration
+            if blacklists == []:
+                print('first')
+                blacklists.append({'postcode':postcode, 'address':addr['address']})
+                addr_filtered.append(addr)
+            
+            else:
+                print(postcode)
+                end_flag = 0
+                for blacklist in blacklists:
+                    if blacklist['postcode'] == postcode:
+                        # calculte text similarity for address when postcode are same
+                        m = SequenceMatcher(None, addr['address'], blacklist['address'])
+                        similarity_limit = 0.66666
+                        similarity_ratio = m.ratio()
 
-        if postcode != ''  and postcode not in postcodes and 'https://' not in addr['address']:
-            postcodes.append(match_content.match_postcode(addr['postcode']))
-            addr_filtered.append(addr)
+                        if similarity_ratio > similarity_limit:
+                            end_flag = 1
+                    else:
+                        # no duplicate until last element
+                        if blacklists[-1] == blacklist:
+                            blacklists.append({'postcode':postcode, 'address':addr['address']})
+                            addr_filtered.append(addr)
+
+                    if end_flag == 1:
+                        break
 
     return addr_filtered
 
 
 def openingtime(original):
     # ------------------------------------filter opening time-----------------------------------------------
-    # Load the JSON file
     opening_hours_list = original
     title_blacklist = []
 
@@ -49,12 +83,10 @@ def openingtime(original):
                 # should not contains https:// as some times it will match something in url
                 # e.g.https://feedback.camdenccg.nhs.uk/north-central-london/3be45ae8/
                 if count_match>2 and 'https://' not in opening_hours['title']:  
-                    opening_hours_filtered[0] = opening_hours_filtered[0] + '\n' + opening_hours['title'] +\
-                    opening_hours['time']
+                    opening_hours_filtered.append(opening_hours)
             else:
                 title_blacklist.append(opening_hours['title'])
-                opening_hours_filtered[0] = opening_hours_filtered[0] + '\n' + opening_hours['title'] +\
-                opening_hours['time']
+                opening_hours_filtered.append(opening_hours)
 
     # Put the opening_hours together
 

@@ -33,16 +33,20 @@ def get_bing_result(domain_url, question):
             print('something went wrong with bing api,try to resend request...')
             connection_attempt += 1
             if connection_attempt == 5:
+                response.close()
                 print('something went wrong with bing api,maximum retry reached!')
                 return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
             # can not read result from bing
             
-    
-    # # ans[ans_content, confidence_score]
-    if response_data['answer'] != 'Sorry, I am having difficulties finding related information on our website to answer your question.':
+    response.close()
+    response_data['answer'] = response_data['answer'].replace('Inpatients Booking an inpatient appointment?','')
+    response_data['possibleAnswer'] = response_data['possibleAnswer'].replace('Inpatients Booking an inpatient appointment?','')
+    # ans[ans_content, confidence_score]
+    if response_data['answer'] != 'Sorry, I am having difficulties finding related information on our website to answer your question.' \
+        and response_data['answer'] != 'No possible answer':
         return [response_data['answer'],response_data['confidenceScore']]
-    elif response_data['possibleAnswer'] != 'possibleAnswer':
+    elif response_data['possibleAnswer'] != 'possibleAnswer' and response_data['possibleAnswer'] != 'No possible answer':
         return [response_data['possibleAnswer'],response_data['confidenceScore']]
-    
+
     return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
 

@@ -13,15 +13,16 @@ def run(domain, page_dictionary):
         try:
             r = requests.head(url,headers=headers)
         except Exception as e:
+            r.close()
             print('error:' + str(e))
             return False
         print(r.status_code)
+        r.close()
         return r.status_code == 200 or r.status_code == 301
-    
+
     for page in page_dictionary:
-        time.sleep(2)
+        time.sleep(1)
         if check_url_validity(domain_url + page):
             urls_exist.append({'url':domain_url + page})
     
     return urls_exist
-

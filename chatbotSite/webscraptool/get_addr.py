@@ -48,6 +48,7 @@ def run(txt):
     for d in sentences_dict['syntax']['sentences']:
         postcode =  match_content.match_postcode(str(d['text']))
         if postcode:
+            print(str(d['text']))
             start_pos.append(cur_index)        
 
         cur_index = cur_index + 1
@@ -69,13 +70,14 @@ def run(txt):
                     'Practice', 'Surgery', 'Medical', 'Hospital', 'Health'
                     ]
         for keyword in keywords:
-            if keyword in cur_text:
+            if keyword in text:
                 return True
         return False
 
     # a list of address and postcode store in dictionary
     addr_dict = [] 
-
+    print('start:')
+    print(start_pos)
     for pos in start_pos:
         cur_pos = pos
         addr_text = ''
@@ -92,10 +94,13 @@ def run(txt):
                 # also get text one word before phonenum in order to get tag(e.g. tel:/out of hour:)
                 contact_text = contact_text + sentences_dict['syntax']['sentences'][cur_pos + i - 1]['text']\
                             + '\n' + sentences_dict['syntax']['sentences'][cur_pos + i]['text'] + '\n'
-
+        
+        # how many item we have already checked
+        item_checked = 0
+        item_checked_limit = 4
         while(True):
             cur_text = sentences_dict['syntax']['sentences'][cur_pos]['text']
-            # print(cur_text)
+            #print(cur_text)
 
             if check_keywords(cur_text):
                 # print('keyword detected!!')
@@ -104,28 +109,58 @@ def run(txt):
                 # we need to check another more sentence just in case they also put the name of hospital in
                 cur_text = sentences_dict['syntax']['sentences'][cur_pos-1]['text']
 
-                if check_keywords(cur_text):
+                # make sure no copyright text so no '©' sign
+                if check_keywords(cur_text) and '©' not in cur_text:
                     end_flag = True
                     addr_text = addr_text + cur_text  + '\n'
                 else:
                     end_flag = True
                     break
             # remove if it is a postcode
-            # elif validation.is_valid_postcode(cur_text.replace(' ','')):
             elif match_content.match_postcode(cur_text):
+                item_checked = item_checked + 1
                 cur_pos = cur_pos - 1
-            else:
+            # we already checked enough item,so we do not go further
+            elif item_checked > item_checked_limit :
+                # the address should be here with postcode but the address does not contain a keyword we have
+                if len(sentences_dict['syntax']['sentences'][pos]['text']) > 12:
+                    addr_text = sentences_dict['syntax']['sentences'][pos]['text']
+                # make sure not out of range
+                elif pos > 1:
+                    addr_text = sentences_dict['syntax']['sentences'][pos]['text'] + \
+                                sentences_dict['syntax']['sentences'][pos-1]['text'] + \
+                                sentences_dict['syntax']['sentences'][pos-2]['text']
+                cur_pos = 0
+                end_flag = True
+                break   
+            elif cur_pos >= 0:
+                item_checked = item_checked + 1
                 addr_text = addr_text + cur_text  + '\n'
                 cur_pos = cur_pos - 1
+            # if we did not detect any keyword even till the end of the page
+            elif cur_pos < 0:
+                # does not only contains postcode in this sentence
+                # the address should be here with postcode but the address does not contain a keyword we have
+                if len(sentences_dict['syntax']['sentences'][pos]['text']) > 12:
+                    addr_text = sentences_dict['syntax']['sentences'][pos]['text']
+                # make sure not out of range
+                elif pos > 1:
+                    addr_text = sentences_dict['syntax']['sentences'][pos]['text'] + \
+                                sentences_dict['syntax']['sentences'][pos-1]['text'] + \
+                                sentences_dict['syntax']['sentences'][pos-2]['text']
+                
+                cur_pos = 0
+                end_flag = True
+                break               
             
             #   if everything is finished then quit
             if end_flag :
                 break
 
                 
-
+        print(pos)
         addr_dict.append({
-                'postcode':sentences_dict['syntax']['sentences'][pos]['text'],
+                'postcode':sentences_dict['syntax']['sentences'][pos]['text'], # the sentence contains postcode
                 'address':addr_text,
                 'contact':contact_text
         })
@@ -133,4 +168,4 @@ def run(txt):
     # output to json if dict not empty
 
 
-        return addr_dict
+    return addr_dict

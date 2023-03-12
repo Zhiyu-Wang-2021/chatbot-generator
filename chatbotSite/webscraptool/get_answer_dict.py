@@ -22,6 +22,8 @@ def get_answer(url):
     # keyword list for general info page
     filter_keywords1 = ['Opening Hour', 'Opening Times', 'Opening times', 'Opening hour', 'opening times', 'opening hour',\
                         'Contact us', 'Contact Us', 'contact us', 'Contact-us','Contact-Us','contact-us', 'Contact','contact']
+    blacklist_keywords1 = ['Research', 'research', 'council', 'Council','membership', 'Membership']
+
     time.sleep(5)
     tool = Tool()
     tool.setup(url)
@@ -30,7 +32,7 @@ def get_answer(url):
     time.sleep(5)
     print('\n\n\nfiltering url...\n\n\n')
     general_info_url = tool.crawl_url_by_dictionary('general_info')
-    general_info_url += tool.filter_url(keywords=filter_keywords1)
+    general_info_url += tool.filter_url(keywords=filter_keywords1,blacklist_keywords=blacklist_keywords1)
 
     time.sleep(3)
     print('\n\n\nscraping text...\n\n\n')
