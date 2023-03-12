@@ -3,7 +3,6 @@ from bson.json_util import dumps
 from django.shortcuts import HttpResponse
 import json
 from dialogJson.answers import Answers
-from dialogJson.dialog_json import DialogJson
 from dialogJson.template_json import template as dialog_json_template
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient
@@ -16,27 +15,6 @@ client = MongoClient(MONGODB_URL)
 dialog_db = client["dialog_json"]
 dialog_collection = dialog_db['dialog_json']
 website_collection = dialog_db["websites_to_dialogs"]
-
-
-@csrf_exempt
-def generate_json(request):  # POST - provide url and generate
-    data = json.loads(request.body)
-    print(data)  # only url and ref
-    if USE_DUMMY_DATA:
-        data["answers"] = get_dummy_answer(data["url"])
-    else:
-        data["answers"] = get_answer(data["url"])
-    ans = Answers(data)
-
-    dj = DialogJson(ans)
-    dialog_json = dj.get_json()
-
-    dialog_filter = {"_id": ObjectId(data["ref"])}
-    new_values = {"$set": dialog_json}
-    dialog_collection.update_one(dialog_filter, new_values)
-
-    return HttpResponse("success")
-
 
 @csrf_exempt
 def generate_json_from_existing(request):  # POST - provide url and generate
