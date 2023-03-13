@@ -21,6 +21,7 @@ class Answers:
             print(e)
             return count
 
+
     def get_appointment_info(self):
         if len(self.appointment) > 0:
             return self.appointment[0]
@@ -28,15 +29,22 @@ class Answers:
     def get_loc_info(self):
         if len(self.location) >= 1 and type(self.location)!=str: 
             if self.length_of_hours_info() <= 1:
-                return "We are at this address:\n" + match_postcode(self.location[0]["postcode"]) \
-                        + self.location[0]["address"]
+                # the content in postcode should not be a duplicate
+                if addr["postcode"] != addr["address"]:
+                    return "We are at this address:\n" + self.location[0]["address"] \
+                           + self.location[0]["postcode"]
+                else:
+                    return "We are at this address:\n" + self.location[0]["address"]
 
             # more than 1 opening hour detected -> multiple clinic on a single page
             if self.length_of_hours_info() > 1:
                 combined_addr = ''
                 for addr in self.location:
-                    combined_addr = combined_addr + match_postcode(addr["postcode"])\
-                                    + addr["address"] + '\n'
+                    if addr["postcode"] != addr["address"]:
+                        combined_addr = combined_addr + addr["address"]\
+                                        + addr["postcode"] + '\n'
+                    else:
+                        combined_addr = combined_addr + addr["address"] + '\n'
                 return "We are at these addresses:\n" + combined_addr
         else:
             return "Sorry, I am not sure about this question based on the information on our website."
