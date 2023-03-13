@@ -14,7 +14,6 @@ def run(domain, page_dictionary):
             r = requests.head(url,headers=headers)
             r.close()
         except Exception as e:
-            r.close()
             print('error:' + str(e))
             return False
         print(r.status_code)

@@ -1,39 +1,20 @@
+# work flow:
 # 1. ibm nlu extract every phrases and sentences
 # 2. find the location where a time(e.g.18:00) is given then match one word/sentence before the time
 # 3. read before the first time period until keyword is detected as there is always a title on the front
-# this part will handle the problem of multiple surgery and filter out Consultation Consulting
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 \
     import Features, KeywordsOptions, SyntaxOptions, SyntaxOptionsTokens
 # check phone number and postcode
 import webscraptool.match_content as match_content
-
-import env
+from webscraptool.tokenizer import tokenization
 
 def run(txt):
-
     # 1.ibm nlu extract every phrases and sentences
-    apikey = env.IBM_NLU_API_KEY
-    apiurl = env.IBM_NLU_URL
-    authenticator = IAMAuthenticator(apikey)
-    natural_language_understanding = NaturalLanguageUnderstandingV1(
-        version='2022-04-07',
-        authenticator=authenticator
-    )
-
-    natural_language_understanding.set_service_url(apiurl)
-
-
-
-    # only get sentences
-    response = natural_language_understanding.analyze(
-        text=txt,
-        features=Features(
-        syntax=SyntaxOptions(
-            sentences=True,
-            ))).get_result()
-
+    response = tokenization(txt)
+    if response == '':
+        return []
 
     # 2.match one word/sentence before the time
     dict = response
@@ -96,6 +77,7 @@ def run(txt):
 
 
     # 3.2 read until keyword is detected as there is always a title on the front and filter out the unwilling content
+    # this part should handle the problem of multiple surgery and filter out Consultation Consulting
     keyword = ['Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
     disallow = ['Consultation', 'Consulting', 'Dr', 'Nurse', 'ANP', 'Assistant']
 

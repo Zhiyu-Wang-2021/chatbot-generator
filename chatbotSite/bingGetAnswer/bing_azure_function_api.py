@@ -27,6 +27,7 @@ def get_bing_result(domain_url, question):
             response = requests.request("POST", url, json=payload, headers=headers)
             response_data = json.loads(response.text)
             connection_attempt = 5
+            response.close()
             break
         except Exception as e:
             print(e)
@@ -37,10 +38,7 @@ def get_bing_result(domain_url, question):
                 print('something went wrong with bing api,maximum retry reached!')
                 return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
             # can not read result from bing
-            
-    response.close()
-    response_data['answer'] = response_data['answer'].replace('Inpatients Booking an inpatient appointment?','')
-    response_data['possibleAnswer'] = response_data['possibleAnswer'].replace('Inpatients Booking an inpatient appointment?','')
+
     # ans[ans_content, confidence_score]
     if response_data['answer'] != 'Sorry, I am having difficulties finding related information on our website to answer your question.' \
         and response_data['answer'] != 'No possible answer':

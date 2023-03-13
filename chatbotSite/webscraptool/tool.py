@@ -131,7 +131,7 @@ class Tool(Abstract_Tool):
             process.crawl(Scrape_Text, url=link['url'])
             process.start()
 
-            # the script will fixed twisted error
+            # the script will fixed twisted error(work around scrapy block us from restart)
             import sys
             del sys.modules['twisted.internet.reactor']
             from twisted.internet import reactor

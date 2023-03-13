@@ -25,11 +25,11 @@ class Abstract_Tool(ABC):
         pass
 
     def filter_url(self, keywords, blacklist_keywords) -> list:
-        # filter out url with specific keyword in title or specific affix
+        # filter out url with specific keyword in title
         # store filtered url in a dict 'self.filtered_url'
         # e.g. if we need to get address the category should be filled in as 'address'
         # all the dict in the list should be as follow
-        # [{'title','link','keyword'},{},....]
+        # [{'title':'title','url':'link','keyword':'keyword'},{},....]
         # all keywords should be as follow
         # ['keyword1', 'keyword2',.....]
         pass
