@@ -12,12 +12,11 @@ def run(domain, page_dictionary):
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         try:
             r = requests.head(url,headers=headers)
-        except Exception as e:
             r.close()
+        except Exception as e:
             print('error:' + str(e))
             return False
         print(r.status_code)
-        r.close()
         return r.status_code == 200 or r.status_code == 301
 
     for page in page_dictionary:
