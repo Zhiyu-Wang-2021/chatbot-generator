@@ -30,7 +30,7 @@ class Answers:
         if len(self.location) >= 1 and type(self.location)!=str: 
             if self.length_of_hours_info() <= 1:
                 # the content in postcode should not be a duplicate
-                if addr["postcode"] != addr["address"]:
+                if self.location[0]["address"] != self.location[0]["postcode"]:
                     return "We are at this address:\n" + self.location[0]["address"] \
                            + self.location[0]["postcode"]
                 else:
