@@ -155,40 +155,28 @@ class Tool(Abstract_Tool):
             pass
 
         else:
+            # combined and filtering content
             for j in content_dict['text']:
-                # try to reconnect to ibm if failed connection due to internet problem
-                max_connection_attempt = 3
-                connection_attempt = 0
+                temp = []
 
-                while(connection_attempt < max_connection_attempt):
-                    time.sleep(1)
-                    try:
-                        temp = []
+                if i == 1:
+                    temp = get_openingtime.run(j['text'])
+                    print(temp)
+                    if temp is not None:
+                        result = result + temp
 
-                        if i == 1:
-                            temp = get_openingtime.run(j['text'])
-                            print(temp)
-                            if temp is not None:
-                                result = result + temp
+                if i == 2:
+                    temp = get_addr.run(j['text'])
+                    print(temp)
+                    if temp is not None:
+                        result = result + temp
 
-                        if i == 2:
-                            temp = get_addr.run(j['text'])
-                            print(temp)
-                            if temp is not None:
-                                result = result + temp
+                if i == 3:
+                    temp = get_phone_num.run(j['text'])
+                    print(temp)
+                    if temp is not None:
+                        result = result + temp
 
-                        if i == 3:
-                            temp = get_phone_num.run(j['text'])
-                            print(temp)
-                            if temp is not None:
-                                result = result + temp
-
-                        # end the while loop if no error
-                        connection_attempt = max_connection_attempt
-
-                    except Exception as e:
-                        connection_attempt += 1
-                        print(e)
         print('-------------------no-filtered-result----------------')
         print(result)
         if i == 1:
