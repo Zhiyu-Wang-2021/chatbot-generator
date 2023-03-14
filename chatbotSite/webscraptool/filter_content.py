@@ -51,6 +51,9 @@ def addr(original):
 
                         if similarity_ratio > similarity_limit:
                             end_flag = 1
+                        elif blacklists[-1] == blacklist:
+                            blacklists.append({'postcode':postcode, 'address':addr['address']})
+                            addr_filtered.append(addr)
                     else:
                         # no duplicate until last element
                         if blacklists[-1] == blacklist:
