@@ -25,9 +25,9 @@ def get_bing_result(domain_url, question):
     while(connection_attempt < max_connection_attempt):
         try:
             response = requests.request("POST", url, json=payload, headers=headers)
+            response.close()
             response_data = json.loads(response.text)
             connection_attempt = 5
-            response.close()
             break
         except Exception as e:
             print(e)

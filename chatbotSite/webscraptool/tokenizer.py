@@ -34,7 +34,6 @@ def tokenization(txt):
                 syntax=SyntaxOptions(
                     sentences=True,
                     ))).get_result()
-            response.close()
             # if succeed just end it
             attemped_connection = 3
         except Exception as e:
