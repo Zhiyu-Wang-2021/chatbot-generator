@@ -34,7 +34,6 @@ def get_bing_result(domain_url, question):
             print('something went wrong with bing api,try to resend request...')
             connection_attempt += 1
             if connection_attempt == 5:
-                response.close()
                 print('something went wrong with bing api,maximum retry reached!')
                 return ['Sorry, I am having difficulties finding related information on our website to answer your question.', 0]
             # can not read result from bing

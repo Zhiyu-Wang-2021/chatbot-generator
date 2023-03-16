@@ -4,7 +4,7 @@ from difflib import SequenceMatcher
 # filter duplicates
 
 def check_keyword_openinghour(title):
-    keywords = ['Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
+    keywords = ['Opening Timings', 'Opening Times', 'Opening Hours', 'Practice', 'Surgery', 'Medical', 'Hospital', 'Health']
     
     if title == '':
         return True
@@ -77,16 +77,7 @@ def openingtime(original):
         if opening_hours['title'] not in title_blacklist and check_keyword_openinghour(opening_hours['title']):
             
             if opening_hours['title'] == '':
-                matches = match_content.match_time_it(opening_hours['title'])
-                count_match = 0
-
-                for match in matches:
-                    count_match = count_match + 1
-
-                # should not contains https:// as some times it will match something in url
-                # e.g.https://feedback.camdenccg.nhs.uk/north-central-london/3be45ae8/
-                if count_match>2 and 'https://' not in opening_hours['title']:  
-                    opening_hours_filtered.append(opening_hours)
+                pass
             else:
                 title_blacklist.append(opening_hours['title'])
                 opening_hours_filtered.append(opening_hours)

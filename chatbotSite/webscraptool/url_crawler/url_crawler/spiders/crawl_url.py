@@ -20,8 +20,8 @@ class Url_Crawler(CrawlSpider):
     # allow passing url as an attribute through command line
     def __init__(self, url=None, *args, **kwargs):
         super(Url_Crawler, self).__init__(*args, **kwargs)
-        self.start_urls = [f'https://{url}/']
-        self.allowed_domains = [f'{url}']
+        self.start_urls = [f'http://{url}/']
+        self.allowed_domains = [f'{url}', '127.0.0.1', 'localhost']
         self.links = []
 
     # Crawling URL

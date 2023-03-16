@@ -43,16 +43,14 @@ def match_phonenumber_content(text):
     for m in match_phonenumber_it(text):
         if m.start == 0 or m.start > 0:
             return text[m.start:m.end]
-        else:
-            return None
+        # it will always return something
 
 def match_time_it(text):
     # match time in sentences, if exists return an iterable object
     match=re.finditer(r'(\d+:\d{2})', text)
     if match:
         return match
-    else:
-        return ''
+    # it will always return something
 
 def match_time(text):
     # a time is matched:return True else false

@@ -4,7 +4,7 @@ import time
 # the url will detect through a given dictionary
 # complement of scrapy url crawler(as it some times scrapy miss pages)
 def run(domain, page_dictionary):
-    domain_url = 'https://' + domain +'/'
+    domain_url = 'http://' + domain +'/'
     urls_exist = []
 
     def check_url_validity(url):

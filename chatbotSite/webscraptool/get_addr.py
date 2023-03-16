@@ -77,8 +77,8 @@ def run(txt):
         item_checked = 0
         item_checked_limit = 4
         while(True):
-            cur_text = sentences_dict['syntax']['sentences'][cur_pos]['text']
-            #print(cur_text)
+            if cur_pos >= 0:
+                cur_text = sentences_dict['syntax']['sentences'][cur_pos]['text']
 
             if check_keywords(cur_text):
                 # print('keyword detected!!')
@@ -95,7 +95,7 @@ def run(txt):
                     end_flag = True
                     break
             # remove if it is a postcode
-            elif match_content.match_postcode(cur_text):
+            elif match_content.match_postcode(cur_text) and cur_pos >= 0:
                 item_checked = item_checked + 1
                 cur_pos = cur_pos - 1
             # we already checked enough item,so we do not go further
