@@ -2,6 +2,8 @@ from bson import ObjectId
 from bson.json_util import dumps
 from django.shortcuts import HttpResponse
 import json
+
+import env
 from dialogJson.answers import Answers
 from dialogJson.template_json import template as dialog_json_template
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +17,9 @@ client = MongoClient(MONGODB_URL)
 dialog_db = client["dialog_json"]
 dialog_collection = dialog_db['dialog_json']
 website_collection = dialog_db["websites_to_dialogs"]
+
+
+# refer manuals/User_Manual_NHSBot.pdf for the doc of the functions in this file
 
 @csrf_exempt
 def generate_json_from_existing(request):  # POST - provide url and generate
@@ -31,6 +36,23 @@ def generate_json_from_existing(request):  # POST - provide url and generate
     ans = Answers(data)
 
     template = dialog_json_template
+    try:
+        template["webhooks"][0]["url"] = env.BING_AZURE_FUNC_URL
+    except KeyError:
+        print("KeyError with this webhook url")
+    try:
+        template["webhooks"][0]["headers"] = [
+            {
+                "name": "Ocp-Apim-Subscription-Key",
+                "value": env.BING_API_KEY
+            },
+            {
+                "name": "Content-Type",
+                "value": "application/json"
+            }
+        ]
+    except KeyError:
+        print("KeyError with this webhook key")
 
     for index in range(len(template["dialog_nodes"])):
         try:
